@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lis — Portfolio</title>
+  <meta name="description" content="פורטפוליו עורך וידאו — עבודות נבחרות ופרטי יצירת קשר" />
+  <link rel="icon" type="image/jpeg" href="videos/524705844_17869241187411495_2786598028850442713_n.jpg" />
+  <link rel="apple-touch-icon" href="videos/524705844_17869241187411495_2786598028850442713_n.jpg" />
+  <style>
+    :root{
+      --bg:#0b0f14; --text:#f5f7fa; --muted:#a0aab4; --accent:#146c94; --accent-2:#318ab2;
+      --radius:14px; --gap:18px; --wrap-max:1200px; --header-h:72px;
+      --sidebar-w: 340px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;direction:rtl;color:var(--text);background:
+      radial-gradient(1800px 800px at 80% -100px, rgba(20,108,148,0.25), transparent 60%),
+      radial-gradient(1200px 700px at 10% -160px, rgba(49,138,178,0.20), transparent 60%), #0a0d10;
+      overflow:hidden}
+
+    .shell{height:100vh;max-width:var(--wrap-max);margin:0 auto;padding:0 var(--gap);display:grid;grid-template-rows:var(--header-h) 1fr;gap:var(--gap)}
+
+    header{display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(255,255,255,0.06)}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .avatar{width:44px;height:44px;border-radius:50%;overflow:hidden;border:1px solid rgba(255,255,255,0.12)}
+    .avatar img{width:100%;height:100%;object-fit:cover}
+    h1{margin:0;font-size:20px}
+    .lead{margin:0;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .spacer{flex:1}
+    .btn{appearance:none;border:none;cursor:pointer;padding:10px 14px;border-radius:999px;background:linear-gradient(180deg, rgba(49,138,178,0.25), rgba(20,108,148,0.25));color:#eaf6ff;font-weight:700;text-decoration:none}
+    .btn + .btn { margin-right: 8px; }
+
+    .stage{display:grid;grid-template-columns: 1fr var(--sidebar-w);gap:var(--gap);min-height:0;height:100%}
+    .content{min-height:0;}
+    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);box-shadow:0 12px 40px rgba(0,0,0,0.35);overflow:hidden}
+    .scroller{min-height:0;height:100%;overflow:auto;overscroll-behavior:contain;padding:14px;scrollbar-width:none;-ms-overflow-style:none}
+    .scroller::-webkit-scrollbar{width:0;height:0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px,1fr));gap:var(--gap)}
+
+    .featured{position:relative;border:1px solid rgba(255,255,255,0.10);border-radius:12px;overflow:hidden;background:#000;aspect-ratio:21/9;box-shadow:0 6px 24px rgba(0,0,0,0.35)}
+    .featured video{width:100%;height:100%;object-fit:cover;display:block}
+    .featured .overlay{position:absolute;inset:auto 0 0 0;padding:14px;background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.55) 30%, rgba(0,0,0,.85));display:flex;flex-direction:column;gap:8px}
+    .featured h2{margin:0;font-size:18px}
+    .featured .tags{display:flex;flex-wrap:wrap;gap:8px}
+    .tag{font-size:11px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12)}
+
+    .card{position:relative;display:block;border:1px solid rgba(255,255,255,0.10);border-radius:12px;overflow:hidden;background:#000;aspect-ratio:16/9;box-shadow:0 6px 24px rgba(0,0,0,0.35);transition:transform .2s, box-shadow .25s, border-color .2s}
+    .card.tall{aspect-ratio:9/16}
+    .card:hover{transform:translateY(-3px);border-color:rgba(49,138,178,0.6);box-shadow:0 0 0 1px rgba(49,138,178,0.35), 0 12px 30px rgba(0,0,0,0.45)}
+    .card img,.card video{width:100%;height:100%;object-fit:cover;display:block}
+    .card .ttl{position:absolute;top:8px;right:10px;font-size:13px;color:#eaf6ff;background:rgba(0,0,0,.45);padding:4px 8px;border-radius:10px;border:1px solid rgba(255,255,255,.2)}
+
+    aside{display:grid;grid-template-rows: 1fr auto;gap:var(--gap);min-height:0}
+    .about,.contact{padding:16px}
+    .about h3,.contact h3{margin:0 0 10px;color:#dff2ff}
+
+    .btnlink{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;text-decoration:none;background:rgba(20,108,148,0.18);border:1px solid rgba(20,108,148,0.35);color:#eaf6ff;font-weight:600;transition:transform .18s ease, background .25s, border .25s, box-shadow .25s;position:relative}
+    .btnlink:hover{background:rgba(20,108,148,0.35);border-color:rgba(49,138,178,0.7);transform:translateY(-2px) scale(1.03)}
+
+    #videoContainer{display:flex;align-items:center;justify-content:center;max-width:92vw;max-height:88vh;padding:0 10px}
+    .modal video,.modal iframe{max-width:92vw;max-height:88vh;width:auto;height:auto;display:block;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+
+    @media (min-width:900px){
+      .featured{grid-column:span 2}
+    }
+    @media (max-width:1000px){
+      .stage{grid-template-columns:1fr}
+      aside{order:2}
+      .content{order:1}
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <div class="avatar"><img src="videos/524705844_17869241187411495_2786598028850442713_n.jpg" alt="Lis"></div>
+        <div>
+          <h1>Lis</h1>
+          <p class="lead">עורך וידאו — רילס · פרסומות · תוכן מותג</p>
+        </div>
+      </div>
+      <div class="spacer"></div>
+
+      
+      <a class="btn" href="https://idolis06-stack.github.io/portfolio/contact.html" rel="noopener">צור קשר</a>
+    </header>
+
+    <div class="stage">
+      <section class="content panel scroller">
+        <div class="grid">
+          <div class="featured" data-video="videos/looking for editorF.mp4">
+            <video autoplay muted loop playsinline preload="metadata" poster="videos/מחפש.png">
+              <source src="videos/looking for editorF.mp4" type="video/mp4" />
+            </video>
+            <div class="overlay">
+              <h2>Showreel</h2>
+              <p style="margin:0;color:var(--muted)">מיקסים לקמפיינים, רילס ומותגים — דגש על תחושה, קצב וסיפור.</p>
+              <div class="tags">
+                <span class="tag">After Effects</span>
+                <span class="tag">DaVinci Resolve</span>
+                <span class="tag">Premiere</span>
+              </div>
+            </div>
+          </div>
+
+          <a class="card" data-video="videos/proj32_test.mp4"><img src="videos/proj32_test.00_00_19_06.Still001.png" alt="פרויקט 1"><span class="ttl"></span></a>
+          <a class="card" data-video="videos/3KV.mp4"><img src="videos/KV.png" alt="פרויקט 2"><span class="ttl"> </span></a>
+          <a class="card" data-video="videos\JUs.mp4"><img src="videos\juicy.png" alt="פרויקט 3"><span class="ttl"> </span></a>
+          <a class="card" data-video="videos/trymp4.mp4"><img src="videos/ג7.Still002.png" alt="פרויקט 4"><span class="ttl"></span></a>
+          <a class="card tall" data-video="videos/UGC 2.mp4"><img src="videos/UGC.png" alt="Reel 1"><span class="ttl"></span></a>
+          <a class="card tall" data-video="videos/סרטון 4 - נאמי בלאסט .mp4"><img src="videos/all006.png" alt="Reel 2"><span class="ttl"></span></a>
+          <a class="card tall" data-video="videos/Sequence 01_1.mp4"><img src="videos/3wb.png" alt="Reel 4"><span class="ttl"></span></a>
+          <a class="card tall" data-video="videos/Sequence 01.mp4"><img src="videos/carp.png" alt="Reel 5"><span class="ttl"></span></a>
+        </div>
+      </section>
+
+      <aside>
+
+        <div class="panel about">
+          <h3>אודות</h3>
+          <p class="bio">עורך וידאו עם ניסיון בתוכן מותג, רילס, פרסומות ו-UGC. גישה נקייה, קריאייטיב, דינמיקה וקצב — כל מה שצריך כדי להפוך רעיון ל<strong>סרטון מנצח</strong>.</p>
+        </div>
+
+        <div class="panel intro" style="padding:16px">
+          <h3 style="display:flex;align-items:center;gap:8px">למה דווקא אני?</h3>
+          <ul style="margin:12px 0;padding-right:18px;display:flex;flex-direction:column;gap:6px;line-height:1.55;font-size:14px;color:#dfe7ef">
+            <li> התמחות בעריכה לקמפיינים, רילס ותוכן מותג</li>
+            <li> עבודה מהירה, זורמת ועמידה בזמנים</li>
+            <li> חשיבה ויזואלית־מוזיקלית — קצב, ביט, תחושה</li>
+            <li> חיבור בין סטוריטלינג לאסטרטגיית תוכן</li>
+            <li> תהליך עבודה נעים ושקוף — יחד יוצרים תוצאה מנצחת</li>
+          </ul>
+        </div>
+
+        <div class="panel contact">
+          <h3>צור קשר</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+
+            <a class="btnlink" href="#" onclick="navigator.clipboard.writeText('idolis06@gmail.com'); alert('📧 המייל הועתק');">
+              מייל
+            </a>
+
+            <a class="btnlink" href="https://www.instagram.com/lis_z111" target="_blank" rel="noopener">
+              אינסטגרם
+            </a>
+
+            <a class="btnlink" href="https://wa.me/972542537273" target="_blank" rel="noopener">
+              WhatsApp
+            </a>
+
+            <a class="btnlink" href="tel:0542537273">
+              שיחה
+            </a>
+
+          </div>
+        </div>
+
+      </aside>
+    </div>
+  </div>
+
+  <div class="modal" id="videoModal" style="position:fixed;inset:0;background:rgba(0,0,0,0.92);display:none;align-items:center;justify-content:center;z-index:999;opacity:0;transition:opacity .25s">
+    <span id="closeModal" style="position:absolute;top:16px;left:20px;color:#fff;font-size:30px;cursor:pointer;opacity:.9">×</span>
+    <div id="videoContainer"></div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('videoModal');
+    const container = document.getElementById('videoContainer');
+    const closeBtn = document.getElementById('closeModal');
+
+    function openPlayer(src){
+      const isEmbed = src.includes('youtube') || src.includes('vimeo');
+      const html = isEmbed
+        ? `<iframe src="${src}?autoplay=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`
+        : `<video controls autoplay playsinline><source src="${src}" type="video/mp4"></video>`;
+      container.innerHTML = html; modal.style.display='flex'; requestAnimationFrame(()=> modal.style.opacity='1');
+    }
+    function closeModal(){ modal.style.opacity='0'; setTimeout(()=>{ modal.style.display='none'; container.innerHTML=''; }, 200) }
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal() });
+
+    document.addEventListener('click', (e)=>{
+      const clickable = e.target.closest('[data-video]');
+      if(!clickable) return;
+      const src = clickable.getAttribute('data-video');
+      openPlayer(src);
+    });
+
+    window.addEventListener('DOMContentLoaded',()=>{
+      const v = document.querySelector('.featured video');
+      if(!v) return;
+      v.muted = true;
+      v.setAttribute('muted','');
+      v.setAttribute('playsinline','');
+      const tryPlay = ()=> v.play().catch(()=>{});
+      tryPlay();
+      setTimeout(tryPlay, 300);
+    });
+  </script>
+</body>
+</html>
