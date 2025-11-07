@@ -6,7 +6,7 @@
   <title>Lis — Portfolio</title>
   <meta name="description" content="פורטפוליו עורך וידאו — עבודות נבחרות ופרטי יצירת קשר" />
 
-  <!-- ✅ תיקון אייקונים אחרי מחיקת videos -->
+  <!-- ✅ אייקונים -->
   <link rel="icon" type="image/jpeg" href="pngs/524705844_17869241187411495_2786598028850442713_n.jpg" />
   <link rel="apple-touch-icon" href="pngs/524705844_17869241187411495_2786598028850442713_n.jpg" />
 
@@ -17,10 +17,14 @@
       --sidebar-w: 340px;
     }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;direction:rtl;color:var(--text);background:
-      radial-gradient(1800px 800px at 80% -100px, rgba(20,108,148,0.25), transparent 60%),
-      radial-gradient(1200px 700px at 10% -160px, rgba(49,138,178,0.20), transparent 60%), #0a0d10;
-      overflow:hidden}
+    html,body{
+      height:100%;margin:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;
+      direction:rtl;color:var(--text);
+      background:
+        radial-gradient(1800px 800px at 80% -100px, rgba(20,108,148,0.25), transparent 60%),
+        radial-gradient(1200px 700px at 10% -160px, rgba(49,138,178,0.20), transparent 60%), #0a0d10;
+      overflow:hidden
+    }
 
     .shell{height:100vh;max-width:var(--wrap-max);margin:0 auto;padding:0 var(--gap);display:grid;grid-template-rows:var(--header-h) 1fr;gap:var(--gap)}
     header{display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(255,255,255,0.06)}
@@ -63,6 +67,18 @@
     #videoContainer{display:flex;align-items:center;justify-content:center;max-width:92vw;max-height:88vh;padding:0 10px}
     .modal video,.modal iframe{max-width:92vw;max-height:88vh;width:auto;height:auto;display:block;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.6)}
 
+    /* ✅ ספינר + fallback */
+    .modal .spinner{
+      width:56px;height:56px;border-radius:50%;
+      border:6px solid rgba(255,255,255,.2);
+      border-top-color:#fff; animation:spin 1s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .fallback-box{
+      color:#dfe7ef; text-align:center; line-height:1.6; max-width:520px; padding:6px 10px;
+    }
+    .fallback-box a{ color:#a7d8ff; font-weight:700; text-decoration:underline; }
+
     @media (min-width:900px){.featured{grid-column:span 2}}
     @media (max-width:1000px){.stage{grid-template-columns:1fr}aside{order:2}.content{order:1}}
   </style>
@@ -86,106 +102,156 @@
 <section class="content panel scroller">
 <div class="grid">
 
-<!-- ✅ וידאו ראשי -->
-<div class="featured" data-video="looking-lis.mp4?v=6">
-  <video autoplay muted loop playsinline preload="metadata" poster="pngs/מחפש.png?v=6">
-    <source src="looking-lis.mp4?v=6" type="video/mp4" />
-  </video>
-  <div class="overlay">
-    <h2>Showreel</h2>
-    <p style="margin:0;color:var(--muted)">מיקסים לקמפיינים, רילס ומותגים — דגש על תחושה, קצב וסיפור.</p>
-    <div class="tags">
-      <span class="tag">After Effects</span>
-      <span class="tag">DaVinci Resolve</span>
-      <span class="tag">Premiere</span>
+  <!-- ✅ וידאו ראשי (מקומי) -->
+  <div class="featured" data-video="looking-lis.mp4?v=6">
+    <video autoplay muted loop playsinline preload="metadata" poster="pngs/מחפש.png?v=6">
+      <source src="looking-lis.mp4?v=6" type="video/mp4" />
+    </video>
+    <div class="overlay">
+      <h2>Showreel</h2>
+      <p style="margin:0;color:var(--muted)">מיקסים לקמפיינים, רילס ומותגים — דגש על תחושה, קצב וסיפור.</p>
+      <div class="tags">
+        <span class="tag">After Effects</span>
+        <span class="tag">DaVinci Resolve</span>
+        <span class="tag">Premiere</span>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- ✅ כל הכרטיסים מצביעים על אותו וידאו כרגע -->
-<a class="card" data-video="looking-lis.mp4?v=6"><img src="pngs/proj32_test.00_00_19_06.Still001.png" alt=""></a>
-<a class="card" data-video="looking-lis.mp4?v=6"><img src="pngs/KV.png" alt=""></a>
-<a class="card" data-video="looking-lis.mp4?v=6"><img src="pngs/juicy.png" alt=""></a>
-<a class="card" data-video="looking-lis.mp4?v=6"><img src="pngs/ג7.Still002.png" alt=""></a>
-<a class="card tall" data-video="looking-lis.mp4?v=6"><img src="pngs/UGC.png" alt=""></a>
-<a class="card tall" data-video="looking-lis.mp4?v=6"><img src="pngs/all006.png" alt=""></a>
-<a class="card tall" data-video="looking-lis.mp4?v=6"><img src="pngs/3wb.png" alt=""></a>
-<a class="card tall" data-video="looking-lis.mp4?v=6"><img src="pngs/carp.png" alt=""></a>
+  <!-- ✅ כרטיסים שפותחים נגן Google Drive -->
+  <a class="card" href="#" data-drive="1Y1f7PyUwuonjK_nLbN-i1IIW1ySJCCc2"><img src="pngs/proj32_test.00_00_19_06.Still001.png" alt=""></a>
+  <a class="card" href="#" data-drive="FILE_ID_2"><img src="pngs/KV.png" alt=""></a>
+  <a class="card" href="#" data-drive="FILE_ID_3"><img src="pngs/juicy.png" alt=""></a>
+  <a class="card" href="#" data-drive="FILE_ID_4"><img src="pngs/ג7.Still002.png" alt=""></a>
+  <a class="card tall" href="#" data-drive="FILE_ID_5"><img src="pngs/UGC.png" alt=""></a>
+  <a class="card tall" href="#" data-drive="1QgtIpBwRrPROyYjxNY-lLt9IA8_M5JAU"><img src="pngs/all006.png" alt=""></a>
+  <a class="card tall" href="#" data-drive="FILE_ID_7"><img src="pngs/3wb.png" alt=""></a>
+  <a class="card tall" href="#" data-drive="FILE_ID_8"><img src="pngs/carp.png" alt=""></a>
 
 </div>
 </section>
 
 <aside>
-<div class="panel about">
-  <h3>אודות</h3>
-  <p class="bio">עורך וידאו עם ניסיון בתוכן מותג, רילס, פרסומות וUGC. גישה נקייה, דינמיקה וקצב — תוצאה מנצחת.</p>
-</div>
-
-<div class="panel intro" style="padding:16px">
-  <h3 style="display:flex;align-items:center;gap:8px">למה דווקא אני?</h3>
-  <ul style="margin:12px 0;padding-right:18px;display:flex;flex-direction:column;gap:6px;line-height:1.55;font-size:14px;color:#dfe7ef">
-    <li>התמחות ברילס וקמפיינים</li>
-    <li>קצב, סטוריטלינג, תחושת מותג</li>
-    <li>עבודה מהירה ומקצועית</li>
-    <li>תהליך נעים ושקוף</li>
-  </ul>
-</div>
-
-<div class="panel contact">
-  <h3>צור קשר</h3>
-  <div style="display:flex;flex-wrap:wrap;gap:10px">
-    <a class="btnlink" href="#" onclick="navigator.clipboard.writeText('idolis06@gmail.com');alert('📧 המייל הועתק');">מייל</a>
-    <a class="btnlink" href="https://www.instagram.com/lis_z111" target="_blank">אינסטגרם</a>
-    <a class="btnlink" href="https://wa.me/972542537273" target="_blank">WhatsApp</a>
-    <a class="btnlink" href="tel:0542537273">שיחה</a>
+  <div class="panel about">
+    <h3>אודות</h3>
+    <p class="bio">עורך וידאו עם ניסיון בתוכן מותג, רילס, פרסומות וUGC. גישה נקייה, דינמיקה וקצב — תוצאה מנצחת.</p>
   </div>
-</div>
+
+  <div class="panel intro" style="padding:16px">
+    <h3 style="display:flex;align-items:center;gap:8px">למה דווקא אני?</h3>
+    <ul style="margin:12px 0;padding-right:18px;display:flex;flex-direction:column;gap:6px;line-height:1.55;font-size:14px;color:#dfe7ef">
+      <li>התמחות ברילס וקמפיינים</li>
+      <li>קצב, סטוריטלינג, תחושת מותג</li>
+      <li>עבודה מהירה ומקצועית</li>
+      <li>תהליך נעים ושקוף</li>
+    </ul>
+  </div>
+
+  <div class="panel contact">
+    <h3>צור קשר</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:10px">
+      <a class="btnlink" href="#" onclick="navigator.clipboard.writeText('idolis06@gmail.com');alert('📧 המייל הועתק');">מייל</a>
+      <a class="btnlink" href="https://www.instagram.com/lis_z111" target="_blank">אינסטגרם</a>
+      <a class="btnlink" href="https://wa.me/972542537273" target="_blank">WhatsApp</a>
+      <a class="btnlink" href="tel:0542537273">שיחה</a>
+    </div>
+  </div>
 </aside>
 </div>
 </div>
 
-<!-- ✅ פופ־אפ וידאו -->
+<!-- ✅ מודאל וידאו -->
 <div class="modal" id="videoModal" style="position:fixed;inset:0;background:rgba(0,0,0,0.92);display:none;align-items:center;justify-content:center;z-index:999;opacity:0;transition:opacity .25s">
   <span id="closeModal" style="position:absolute;top:16px;left:20px;color:#fff;font-size:30px;cursor:pointer;opacity:.9">×</span>
   <div id="videoContainer"></div>
 </div>
 
 <script>
-const modal=document.getElementById('videoModal');
-const container=document.getElementById('videoContainer');
-const closeBtn=document.getElementById('closeModal');
+const modal     = document.getElementById('videoModal');
+const container = document.getElementById('videoContainer');
+const closeBtn  = document.getElementById('closeModal');
 
-function openPlayer(src){
-  const file=encodeURI(src);
-  const html=`<video controls autoplay playsinline><source src="${file}" type="video/mp4"></video>`;
-  container.innerHTML=html;
+function showModal(){
   modal.style.display='flex';
   requestAnimationFrame(()=> modal.style.opacity='1');
 }
-
 function closeModal(){
   modal.style.opacity='0';
   setTimeout(()=>{modal.style.display='none';container.innerHTML='';},200);
 }
+closeBtn.addEventListener('click', closeModal);
+modal.addEventListener('click', e=>{ if(e.target===modal) closeModal(); });
 
-closeBtn.addEventListener('click',closeModal);
-modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
+function openLocalVideo(src){
+  const file = encodeURI(src);
+  container.innerHTML = `<video controls autoplay playsinline>
+    <source src="${file}" type="video/mp4">
+  </video>`;
+  showModal();
+}
 
-document.addEventListener('click',e=>{
-  const clickable=e.target.closest('[data-video]');
-  if(!clickable)return;
-  openPlayer(clickable.getAttribute('data-video'));
+function openDrive(id){
+  // 1) ספינר מיידי
+  container.innerHTML = `<div class="spinner"></div>`;
+  showModal();
+
+  // 2) נגדיר fallback לפני onload/src כדי למנוע מרוץ/TDZ
+  let fallbackFired = false;
+  let fallbackTimer = setTimeout(() => {
+    fallbackFired = true;
+    container.innerHTML = `
+      <div class="fallback-box">
+        <p>נראה ש-Google Drive טוען לאט…</p>
+        <p><a href="https://drive.google.com/file/d/${id}/view" target="_blank" rel="noopener">
+          פתיחה ישירה בדרייב ↗
+        </a></p>
+        <p style="font-size:13px;opacity:.8">
+          טיפ: ודא שהקובץ סיים <em>Processing</em> וש-third-party cookies לא חסומים.
+        </p>
+      </div>
+    `;
+  }, 12000);
+
+  // 3) נכין iframe ונקשיב ל-load
+  const url = `https://drive.google.com/file/d/${id}/preview?autoplay=1&mute=1`;
+  const iframe = document.createElement('iframe');
+  iframe.allow = 'autoplay; fullscreen';
+  iframe.allowFullscreen = true;
+  iframe.style.width = '92vw';
+  iframe.style.height = '88vh';
+  iframe.style.border = '0';
+  iframe.addEventListener('load', () => {
+    if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null; }
+    if (!fallbackFired) {
+      container.innerHTML = '';
+      container.appendChild(iframe);
+    }
+  });
+
+  // 4) רק עכשיו נגדיר src
+  iframe.src = url;
+
+  // לא מצרפים את ה-iframe מיד כדי להשאיר את הספינר עד ל-load
+}
+
+document.addEventListener('click', e=>{
+  const el = e.target.closest('[data-video],[data-drive]');
+  if(!el) return;
+  e.preventDefault(); // אל תלחץ קישור
+  const driveId = el.getAttribute('data-drive');
+  const fileSrc = el.getAttribute('data-video');
+  if (driveId) openDrive(driveId);
+  else if (fileSrc) openLocalVideo(fileSrc);
 });
 
-window.addEventListener('DOMContentLoaded',()=>{
-  const v=document.querySelector('.featured video');
-  if(!v)return;
-  v.muted=true;
+window.addEventListener('DOMContentLoaded', ()=>{
+  const v = document.querySelector('.featured video');
+  if(!v) return;
+  v.muted = true;
   v.setAttribute('muted','');
   v.setAttribute('playsinline','');
-  const tryPlay=()=>v.play().catch(()=>{});
-  tryPlay();
-  setTimeout(tryPlay,300);
+  const tryPlay = ()=> v.play().catch(()=>{});
+  tryPlay(); setTimeout(tryPlay,300);
 });
 </script>
 </body>
