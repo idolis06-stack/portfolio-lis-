@@ -118,38 +118,38 @@
     </div>
   </div>
 
-<!-- ✅ כרטיסים שפותחים וידאו מקומי -->
-<a class="card" href="#" data-video="proj32_test.mp4">
-  <img src="pngs/proj32_test.00_00_19_06.Still001.png" alt="">
-</a>
+  <!-- ✅ כרטיסים שפותחים וידאו מקומי -->
+  <a class="card" href="#" data-video="proj32_test.mp4">
+    <img src="pngs/proj32_test.00_00_19_06.Still001.png" alt="">
+  </a>
 
-<a class="card" href="#" data-video="KV.mp4">
-  <img src="pngs/KV.png" alt="">
-</a>
+  <a class="card" href="#" data-video="kv.mp4">
+    <img src="pngs/KV.png" alt="">
+  </a>
 
-<a class="card" href="#" data-video="juicy.mp4">
-  <img src="pngs/juicy.png" alt="">
-</a>
+  <a class="card" href="#" data-video="juicy.mp4">
+    <img src="pngs/juicy.png" alt="">
+  </a>
 
-<a class="card" href="#" data-video="trymp4.mp4">
-  <img src="pngs/ג7.Still002.png" alt="">
-</a>
+  <a class="card" href="#" data-video="trymp4.mp4">
+    <img src="pngs/ג7.Still002.png" alt="">
+  </a>
 
-<a class="card tall" href="#" data-video="UGC2.mp4">
-  <img src="pngs/UGC.png" alt="">
-</a>
+  <a class="card tall" href="#" data-video="ugc2.mp4">
+    <img src="pngs/UGC.png" alt="">
+  </a>
 
-<a class="card tall" href="#" data-video="nami-blast.mp4">
-  <img src="pngs/all006.png" alt="">
-</a>
+  <a class="card tall" href="#" data-video="nami-blast.mp4">
+    <img src="pngs/all006.png" alt="">
+  </a>
 
-<a class="card tall" href="#" data-video="Sequence01_1.mp4">
-  <img src="pngs/3wb.png" alt="">
-</a>
+  <a class="card tall" href="#" data-video="sequence01_1.mp4">
+    <img src="pngs/3wb.png" alt="">
+  </a>
 
-<a class="card tall" href="#" data-video="carp.mp4">
-  <img src="pngs/carp.png" alt="">
-</a>
+  <a class="card tall" href="#" data-video="carp.mp4">
+    <img src="pngs/carp.png" alt="">
+  </a>
 
 </div>
 </section>
@@ -205,68 +205,31 @@ function closeModal(){
 closeBtn.addEventListener('click', closeModal);
 modal.addEventListener('click', e=>{ if(e.target===modal) closeModal(); });
 
+/* 🎥 ניגון קובץ מקומי + מטפל שגיאות ידידותי */
 function openLocalVideo(src){
   const file = encodeURI(src);
-  container.innerHTML = `<video controls autoplay playsinline>
+  container.innerHTML = `<video id="pv" controls autoplay playsinline>
     <source src="${file}" type="video/mp4">
   </video>`;
-  showModal();
-}
-
-function openDrive(id){
-  // 1) ספינר מיידי
-  container.innerHTML = `<div class="spinner"></div>`;
-  showModal();
-
-  // 2) נגדיר fallback לפני onload/src כדי למנוע מרוץ/TDZ
-  let fallbackFired = false;
-  let fallbackTimer = setTimeout(() => {
-    fallbackFired = true;
-    container.innerHTML = `
-      <div class="fallback-box">
-        <p>נראה ש-Google Drive טוען לאט…</p>
-        <p><a href="https://drive.google.com/file/d/${id}/view" target="_blank" rel="noopener">
-          פתיחה ישירה בדרייב ↗
-        </a></p>
-        <p style="font-size:13px;opacity:.8">
-          טיפ: ודא שהקובץ סיים <em>Processing</em> וש-third-party cookies לא חסומים.
-        </p>
-      </div>
-    `;
-  }, 12000);
-
-  // 3) נכין iframe ונקשיב ל-load
-  const url = `https://drive.google.com/file/d/${id}/preview?autoplay=1&mute=1`;
-  const iframe = document.createElement('iframe');
-  iframe.allow = 'autoplay; fullscreen';
-  iframe.allowFullscreen = true;
-  iframe.style.width = '92vw';
-  iframe.style.height = '88vh';
-  iframe.style.border = '0';
-  iframe.addEventListener('load', () => {
-    if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null; }
-    if (!fallbackFired) {
-      container.innerHTML = '';
-      container.appendChild(iframe);
-    }
+  const v = container.querySelector('#pv');
+  v.addEventListener('error', ()=>{
+    container.insertAdjacentHTML('beforeend',
+      `<div class="fallback-box">❌ לא הצלחתי לטעון: <code>${file}</code><br>
+       ודא שהשם/המיקום ב-repo תואם בול (רגיש לאותיות), או נסה <code>${file}?v=${Date.now()}</code> לעקיפת קאש.</div>`);
   });
-
-  // 4) רק עכשיו נגדיר src
-  iframe.src = url;
-
-  // לא מצרפים את ה-iframe מיד כדי להשאיר את הספינר עד ל-load
+  showModal();
 }
 
+/* 🖱️ האזנה לכרטיסים */
 document.addEventListener('click', e=>{
-  const el = e.target.closest('[data-video],[data-drive]');
+  const el = e.target.closest('[data-video]');
   if(!el) return;
-  e.preventDefault(); // אל תלחץ קישור
-  const driveId = el.getAttribute('data-drive');
+  e.preventDefault();
   const fileSrc = el.getAttribute('data-video');
-  if (driveId) openDrive(driveId);
-  else if (fileSrc) openLocalVideo(fileSrc);
+  if (fileSrc) openLocalVideo(fileSrc);
 });
 
+/* ▶️ הפעלת ה-featured בלולאה בשקט */
 window.addEventListener('DOMContentLoaded', ()=>{
   const v = document.querySelector('.featured video');
   if(!v) return;
