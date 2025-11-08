@@ -25,24 +25,13 @@
       background:
         radial-gradient(1800px 800px at 80% -100px, rgba(20,108,148,0.25), transparent 60%),
         radial-gradient(1200px 700px at 10% -160px, rgba(49,138,178,0.20), transparent 60%), #0a0d10;
-      /* 🖥️ ברירת מחדל — כמו בהתחלה בדסקטופ */
-      overflow:hidden;
-      -webkit-tap-highlight-color: transparent;
-    }
-    body{
-      font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;
-      direction:rtl; color:var(--text);
-      background:
-        radial-gradient(1800px 800px at 80% -100px, rgba(20,108,148,0.25), transparent 60%),
-        radial-gradient(1200px 700px at 10% -160px, rgba(49,138,178,0.20), transparent 60%), #0a0d10;
-      /* 📱 חשוב לניידים: לא לחסום גלילה של הדף */
-      overflow:auto;
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* 🔲 מעטפת */
+    /* 🔲 מעטפת (דסקטופ מקורי) */
+    body{ overflow:hidden; }                      /* דסקטופ: גלילה פנימית בלבד */
     .shell{
-      height:100vh; /* 🖥️ כמו במקור לדסקטופ */
+      height:100vh;                               /* דסקטופ מקורי */
       max-width:var(--wrap-max);
       margin:0 auto;
       padding:0 var(--gap);
@@ -65,7 +54,7 @@
       touch-action:manipulation;
     }
 
-    /* 🎛️ מבנה הבמה */
+    /* 🎛️ מבנה הבמה (דסקטופ מקורי) */
     .stage{ display:grid; grid-template-columns:1fr var(--sidebar-w); gap:var(--gap); min-height:0 }
     .content{ min-height:0 }
     .panel{ background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius); box-shadow:0 12px 40px rgba(0,0,0,0.35); overflow:hidden }
@@ -106,61 +95,43 @@
     .fallback-box{ color:#dfe7ef; text-align:center; line-height:1.6; max-width:520px; padding:6px 10px }
     .fallback-box a{ color:#a7d8ff; font-weight:700; text-decoration:underline }
 
-    /*/* 🖥️ התאמות דסקטופ */
-    @media (min-width: 900px){
-      /* כמו המקור: ה-Showreel תופס שני טורים בגריד של התוכן */
-      .grid > .featured{ grid-column:span 2 }
-    }
-    @media (min-width: 1024px){
-      :root{ --gap:18px }
-      .grid{ grid-template-columns:repeat(auto-fill, minmax(280px,1fr)) }
-      .featured{ aspect-ratio:21/9 }
-      h1{ font-size:22px }
-      .lead{ display:block; font-size:13px }
-    }
-    @media (min-width: 1280px){
-      :root{ --wrap-max:1280px; --sidebar-w:360px }
-      .stage{ grid-template-columns:1fr var(--sidebar-w) }
+    /* =========================
+       📱 התאמות מובייל בלבד
+       (דסקטופ לא משתנה בכלל)
+       ========================= */
+
+    /* ≤1024px – עוברים לעמודה אחת, גלילת עמוד, ו-Showreel שורה מלאה */
+    @media (max-width: 1024px){
+      html, body{ overflow-y:auto; }
+      .shell{
+        min-height:100svh;
+        height:auto;
+        padding:calc(env(safe-area-inset-top) + var(--gap)) var(--gap) var(--gap) var(--gap);
+      }
+      .stage{ grid-template-columns:1fr; }
+      aside{ order:2; }
+      .content{ order:1; }
+
+      /* שחרור הגבלות גלילה פנימית */
+      .scroller{ height:auto; max-height:none; }
+
+      /* ה-Showreel תמיד שורה מלאה */
+      .grid > .featured{ grid-column:1 / -1; }
     }
 
-    /* 📱 התאמות מובייל */
-    @media (max-width: 1000px){
-      /* 📱 במובייל מחזירים גלילה וגובה דינמי עם safe-area */
-      body{ overflow:auto }
-      .shell{ min-height:100dvh; height:auto; padding:calc(env(safe-area-inset-top) + var(--gap)) var(--gap) var(--gap) var(--gap) }
-      .stage{ grid-template-columns:1fr }
-      aside{ order:2 }
-      .content{ order:1 }
-    }
-      aside{ order:2 }
-      .content{ order:1 }
-    }
+    /* ≤720px – שני טורים לגריד; ה-Showreel נשאר שורה מלאה */
     @media (max-width: 720px){
       :root{ --gap:14px }
       header{ padding-bottom:8px }
-      /* 🔁 מבנה שונה בלבד — בלי שינויי עיצוב */
-      .stage{ grid-template-columns:1fr }
-      aside{ order:2 }
-      .content{ order:1 }
       .grid{ grid-template-columns:repeat(2, 1fr); gap:var(--gap) }
-      .grid > .featured{ grid-column:1 / -1; /* שורה מלאה ל‑Showreel */ }
+      .grid > .featured{ grid-column:1 / -1; aspect-ratio:16/9; }
     }
-      header{ padding-bottom:8px }
-      .grid{ grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)) }
-      .featured{ aspect-ratio:16/9 } /* יחס מעט גבוה יותר בנייד */
-      .btn{ padding:10px 12px; font-size:13px }
-    }
+
+    /* ≤480px – טור אחד לגריד */
     @media (max-width: 480px){
       :root{ --gap:12px }
       .grid{ grid-template-columns:1fr; gap:var(--gap) }
       .avatar{ width:38px; height:38px }
-    }
-      .avatar{ width:38px; height:38px }
-      .lead{ display:none } /* פחות עומס בשורה העליונה */
-      .grid{ grid-template-columns:1fr 1fr; gap:12px }
-      .card{ border-radius:10px }
-      .about,.contact{ padding:14px }
-      .btnlink{ padding:10px 12px; font-size:13px }
     }
 
     /* ♿ העדפת נגישות */
@@ -246,7 +217,7 @@
     <aside>
       <div class="panel about">
         <h3>אודות</h3>
-        <p class="bio">עורך וידאו עם ניסיון בתוכן מותג, רילס, פרסומות ו‑UGC. גישה נקייה, דינמיקה וקצב — תוצאה מנצחת.</p>
+        <p class="bio">עורך וידאו עם ניסיון בתוכן מותג, רילס, פרסומות ו-UGC. גישה נקייה, דינמיקה וקצב — תוצאה מנצחת.</p>
       </div>
 
       <div class="panel intro" style="padding:16px">
