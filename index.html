@@ -138,14 +138,22 @@
     @media (max-width: 720px){
       :root{ --gap:14px }
       header{ padding-bottom:8px }
-      .grid{ grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)) }
+      /* 🔁 מבנה שונה בלבד — בלי שינויי עיצוב */
+      .stage{ grid-template-columns:1fr }
+      aside{ order:2 }
+      .content{ order:1 }
+      .grid{ grid-template-columns:repeat(2, 1fr); gap:var(--gap) }
+      .grid > .featured{ grid-column:1 / -1; /* שורה מלאה ל‑Showreel */ }
+    }d-template-columns:repeat(auto-fill, minmax(180px, 1fr)) }
       .featured{ aspect-ratio:16/9 } /* יחס מעט גבוה יותר בנייד */
       .btn{ padding:10px 12px; font-size:13px }
     }
     @media (max-width: 480px){
+      :root{ --gap:12px }@media (max-width: 480px){
       :root{ --gap:12px }
+      .grid{ grid-template-columns:1fr; gap:var(--gap) }
       .avatar{ width:38px; height:38px }
-      .lead{ display:none } /* פחות עומס בשורה העליונה */
+    }d{ display:none } /* פחות עומס בשורה העליונה */
       .grid{ grid-template-columns:1fr 1fr; gap:12px }
       .card{ border-radius:10px }
       .about,.contact{ padding:14px }
@@ -153,8 +161,7 @@
     }
 
     /* ♿ העדפת נגישות */
-    @media (prefers-reduced-motion: reduce){
-      .card{ transition:none }
+    @media (tion:none }
       .modal{ transition:none }
     }
   </style>
