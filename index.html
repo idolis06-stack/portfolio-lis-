@@ -67,7 +67,7 @@
     #videoContainer{display:flex;align-items:center;justify-content:center;max-width:92vw;max-height:88vh;padding:0 10px}
     .modal video,.modal iframe{max-width:92vw;max-height:88vh;width:auto;height:auto;display:block;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.6)}
 
-    /* ✅ ספינר + fallback */
+    /* ✅ ספינר + טקסטים */
     .modal .spinner{
       width:56px;height:56px;border-radius:50%;
       border:6px solid rgba(255,255,255,.2);
@@ -78,6 +78,20 @@
       color:#dfe7ef; text-align:center; line-height:1.6; max-width:520px; padding:6px 10px;
     }
     .fallback-box a{ color:#a7d8ff; font-weight:700; text-decoration:underline; }
+
+    /* 🎬 YouTube containers */
+    .yt-wide, .yt-vert {
+      position: relative;
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #000;
+    }
+    .yt-wide { max-width: 900px; aspect-ratio: 16 / 9; }
+    .yt-vert { max-width: 420px; aspect-ratio: 9 / 16; }
+    .yt-wide iframe, .yt-vert iframe {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+    }
 
     @media (min-width:900px){.featured{grid-column:span 2}}
     @media (max-width:1000px){.stage{grid-template-columns:1fr}aside{order:2}.content{order:1}}
@@ -118,36 +132,38 @@
     </div>
   </div>
 
-  <!-- ✅ כרטיסים שפותחים וידאו מקומי -->
+  <!-- ✅ שלושה נשארים מקומיים -->
   <a class="card" href="#" data-video="proj32_test.mp4">
     <img src="pngs/proj32_test.00_00_19_06.Still001.png" alt="">
-  </a>
-
-  <a class="card" href="#" data-video="kv.mp4">
-    <img src="pngs/KV.png" alt="">
-  </a>
-
-  <a class="card" href="#" data-video="juicy.mp4">
-    <img src="pngs/juicy.png" alt="">
   </a>
 
   <a class="card" href="#" data-video="trymp4.mp4">
     <img src="pngs/ג7.Still002.png" alt="">
   </a>
 
-  <a class="card tall" href="#" data-video="ugc2.mp4">
+  <!-- ✅ YouTube רגיל (16:9): kv, juicy -->
+  <a class="card" href="#" data-yt="S0-OBUcCwAQ">
+    <img src="pngs/KV.png" alt="">
+  </a>
+
+  <a class="card" href="#" data-yt="S0-OBUcCwAQ">
+    <img src="pngs/juicy.png" alt="">
+  </a>
+
+  <!-- ✅ YouTube ריל (9:16): כל השאר -->
+  <a class="card tall" href="#" data-yt-vert="VERT_ID_1">
     <img src="pngs/UGC.png" alt="">
   </a>
 
-  <a class="card tall" href="#" data-video="nami-blast.mp4">
+  <a class="card tall" href="#" data-yt-vert="VERT_ID_2">
     <img src="pngs/all006.png" alt="">
   </a>
 
-  <a class="card tall" href="#" data-video="sequence01_1.mp4">
+  <a class="card tall" href="#" data-yt-vert="VERT_ID_3">
     <img src="pngs/3wb.png" alt="">
   </a>
 
-  <a class="card tall" href="#" data-video="carp.mp4">
+  <a class="card tall" href="#" data-yt-vert="VERT_ID_4">
     <img src="pngs/carp.png" alt="">
   </a>
 
@@ -205,7 +221,7 @@ function closeModal(){
 closeBtn.addEventListener('click', closeModal);
 modal.addEventListener('click', e=>{ if(e.target===modal) closeModal(); });
 
-/* 🎥 ניגון קובץ מקומי + מטפל שגיאות ידידותי */
+/* 🎥 מקומי + הודעת שגיאה ידידותית */
 function openLocalVideo(src){
   const file = encodeURI(src);
   container.innerHTML = `<video id="pv" controls autoplay playsinline>
@@ -220,16 +236,52 @@ function openLocalVideo(src){
   showModal();
 }
 
-/* 🖱️ האזנה לכרטיסים */
+/* 🎬 YouTube רגיל (16:9) */
+function openYouTube(id){
+  container.innerHTML = `
+    <div class="yt-wide">
+      <iframe
+        src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&modestbranding=1"
+        frameborder="0"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  `;
+  showModal();
+}
+
+/* 📱 YouTube ריל (9:16) */
+function openYouTubeVertical(id){
+  container.innerHTML = `
+    <div class="yt-vert">
+      <iframe
+        src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&modestbranding=1"
+        frameborder="0"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  `;
+  showModal();
+}
+
+/* 🖱️ קליק לכל הסוגים */
 document.addEventListener('click', e=>{
-  const el = e.target.closest('[data-video]');
+  const el = e.target.closest('[data-video],[data-yt],[data-yt-vert]');
   if(!el) return;
   e.preventDefault();
-  const fileSrc = el.getAttribute('data-video');
-  if (fileSrc) openLocalVideo(fileSrc);
+
+  const local = el.getAttribute('data-video');
+  const ytWide = el.getAttribute('data-yt');
+  const ytVert = el.getAttribute('data-yt-vert');
+
+  if (local) return openLocalVideo(local);
+  if (ytWide) return openYouTube(ytWide);
+  if (ytVert) return openYouTubeVertical(ytVert);
 });
 
-/* ▶️ הפעלת ה-featured בלולאה בשקט */
+/* ▶️ הפעלת ה-featured בשקט בלולאה */
 window.addEventListener('DOMContentLoaded', ()=>{
   const v = document.querySelector('.featured video');
   if(!v) return;
