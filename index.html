@@ -17,7 +17,7 @@
       --sidebar-w:340px;
     }
 
-    /* 🧱 Reset בסיסי + RTL */
+    /* 🧱 Reset + RTL */
     *, *::before, *::after{ box-sizing:border-box }
     html, body{
       font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;
@@ -61,11 +61,11 @@
     .scroller{ min-height:0; max-height:100%; height:100%; overflow:auto; overscroll-behavior:contain; padding:14px; scrollbar-width:none; -ms-overflow-style:none; -webkit-overflow-scrolling:touch }
     .scroller::-webkit-scrollbar{ width:0; height:0 }
 
-    /* ✅ שתי עמודות קבועות לכרטיסים; ה-Showreel שורה מלאה */
+    /* ✅ תמיד שני טורים לכל הכרטיסים; ה-Showreel תופס שורה מלאה */
     .grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:var(--gap) }
     .grid > .featured{ grid-column:1 / -1; }
 
-    /* 🎥 אזור וידאו ראשי */
+    /* 🎥 Showreel */
     .featured{ position:relative; border:1px solid rgba(255,255,255,0.10); border-radius:12px; overflow:hidden; background:#000; aspect-ratio:21/9; box-shadow:0 6px 24px rgba(0,0,0,0.35) }
     .featured video{ width:100%; height:100%; object-fit:cover; object-position:center; display:block }
     .featured .overlay{ position:absolute; inset:auto 0 0 0; padding:12px; background:linear-gradient(180deg, rgba(0,0,0,0),rgba(0,0,0,.55) 30%,rgba(0,0,0,.85)); display:flex; flex-direction:column; gap:6px }
@@ -78,7 +78,6 @@
     .card.tall{ aspect-ratio:9/16 }
     .card:hover{ transform:translateY(-3px); border-color:rgba(49,138,178,0.6); box-shadow:0 0 0 1px rgba(49,138,178,0.35),0 12px 30px rgba(0,0,0,0.45) }
     .card img{ width:100%; height:100%; object-fit:cover; display:block }
-    .card .ttl{ position:absolute; top:8px; right:10px; font-size:13px; color:#eaf6ff; background:rgba(0,0,0,.45); padding:4px 8px; border-radius:10px; border:1px solid rgba(255,255,255,.2) }
 
     /* 🧰 סיידבר */
     aside{ display:grid; grid-template-rows:1fr auto; gap:var(--gap); min-height:0 }
@@ -98,10 +97,10 @@
     .fallback-box a{ color:#a7d8ff; font-weight:700; text-decoration:underline }
 
     /* =========================
-       📱 התאמות מובייל בלבד
+       📱 התאמות מובייל
        ========================= */
 
-    /* ≤1024px – עמודה אחת במבנה, אבל הגריד נשאר 2 כדי לשמור "שניים בשורה" */
+    /* ≤1024px – עמודה אחת למבנה; הגריד נשאר 2 טורים */
     @media (max-width: 1024px){
       html, body{ overflow-y:auto; }
       .shell{
@@ -116,7 +115,7 @@
       .grid > .featured{ grid-column:1 / -1; }
     }
 
-    /* ≤720px – עדיין שני טורים (כמו שביקשת), וה-Showreel שורה מלאה */
+    /* ≤720px – עדיין שני טורים; מקטינים מרווחים וה-Showreel 16:9 */
     @media (max-width: 720px){
       :root{ --gap:14px }
       header{ padding-bottom:8px }
@@ -124,11 +123,11 @@
       .grid > .featured{ grid-column:1 / -1; aspect-ratio:16/9; }
     }
 
-    /* ≤480px – יורדים לטור אחד כדי שיהיה נוח במסכים קטנים */
+    /* ≤480px – שומרים שני טורים, רק מצמצמים מרווחים/אוואטר */
     @media (max-width: 480px){
-      :root{ --gap:12px }
-      .grid{ grid-template-columns:1fr; gap:var(--gap) }
+      :root{ --gap:10px }
       .avatar{ width:38px; height:38px }
+      .grid{ grid-template-columns:repeat(2, 1fr); gap:var(--gap) } /* 👈 נשאר 2 טורים */
     }
 
     /* ♿ העדפת נגישות */
@@ -157,7 +156,7 @@
     <section class="content panel scroller">
       <div class="grid">
 
-        <!-- ✅ Showreel — תופס שורה מלאה -->
+        <!-- ✅ Showreel — שורה מלאה -->
         <div class="featured" data-video="looking-lis.mp4">
           <video autoplay muted loop playsinline preload="metadata" poster="pngs/מחפש.png?v=6">
             <source src="looking-lis.mp4" type="video/mp4" />
@@ -173,7 +172,7 @@
           </div>
         </div>
 
-        <!-- 🎴 כרטיסים — שניים בשורה -->
+        <!-- 🎴 כרטיסים — תמיד שניים בשורה -->
         <a class="card" href="#" data-video="proj32_test.mp4">
           <img src="pngs/proj32_test.00_00_19_06.Still001.png" alt="" loading="lazy">
         </a>
