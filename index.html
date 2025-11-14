@@ -15,6 +15,7 @@
       --bg:#0b0f14; --text:#f5f7fa; --muted:#a0aab4; --accent:#146c94; --accent-2:#318ab2;
       --radius:14px; --gap:18px; --wrap-max:1200px; --header-h:72px;
       --sidebar-w:340px;
+      --footer-h:48px; /* ✅ גובה בר תחתון מרכזי */
     }
 
     /* 🧱 Reset + RTL */
@@ -55,14 +56,19 @@
     }
 
     /* 🎛️ מבנה הבמה */
-    .stage{ display:grid; grid-template-columns:1fr var(--sidebar-w); gap:var(--gap); min-height:0 }
+    .stage{ display:grid; grid-template-columns:1fr var(--sidebar-w); gap:var(--gap); min-height:0; padding-bottom:calc(var(--footer-h) + env(safe-area-inset-bottom) + 16px) }
     .content{ min-height:0 }
     .panel{ background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius); box-shadow:0 12px 40px rgba(0,0,0,0.35); overflow:hidden }
-    .scroller{ min-height:0; max-height:100%; height:100%; overflow:auto; overscroll-behavior:contain; padding:14px; scrollbar-width:none; -ms-overflow-style:none; -webkit-overflow-scrolling:touch }
+    .scroller{
+      padding-bottom:calc(var(--footer-h) + env(safe-area-inset-bottom) + 30px); min-height:0; max-height:100%; height:100%; overflow:auto; overscroll-behavior:contain; padding:14px; /* ↓ רזרבה לבר */
+      padding-bottom:calc(var(--footer-h) + env(safe-area-inset-bottom) + 20px);
+      scrollbar-width:none; -ms-overflow-style:none; -webkit-overflow-scrolling:touch }
     .scroller::-webkit-scrollbar{ width:0; height:0 }
 
     /* ✅ תמיד שני טורים לכל הכרטיסים; ה-Showreel תופס שורה מלאה */
     .grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:var(--gap) }
+    .grid::after{ content:""; display:block; height:calc(var(--footer-h) + env(safe-area-inset-bottom) + 24px); } /* ✅ רווח בטוח מתחת לגריד כדי שלא יסתתר מאחורי ה-footer */
+    
     .grid > .featured{ grid-column:1 / -1; }
 
     /* 🎥 Showreel */
@@ -80,7 +86,8 @@
     .card img{ width:100%; height:100%; object-fit:cover; display:block }
 
     /* 🧰 סיידבר */
-    aside{ display:grid; grid-template-rows:1fr auto; gap:var(--gap); min-height:0 }
+    aside{ display:grid; grid-template-rows:1fr auto; gap:var(--gap); min-height:0; /* ✅ רווח נגד חפיפה בימין */
+      padding-bottom:calc(var(--footer-h) + env(safe-area-inset-bottom) + 16px) }
     .about,.contact{ padding:16px }
     .about h3,.contact h3{ margin:0 0 10px; color:#dff2ff }
 
@@ -151,6 +158,16 @@
     @media (prefers-reduced-motion: reduce){
       .card{ transition:none }
       .modal{ transition:none }
+    }
+
+    /* ✅ Bottom Bar (לא חופף תוכן) */
+    footer.site-footer{
+      position:fixed; bottom:0; right:0; left:0;
+      height:calc(var(--footer-h) + env(safe-area-inset-bottom));
+      display:flex; align-items:center; justify-content:center;
+      border-top:1px solid rgba(255,255,255,0.12);
+      background:#0b0f14;
+      color:#e9f3ff; font-size:13px; z-index:900; letter-spacing:.2px;
     }
   </style>
 </head>
@@ -224,7 +241,10 @@
         </a>
 
       </div>
-    </section>
+        
+        <!-- 👇 רווח נוסף לביטחון (במכשירים בעייתיים) -->
+        <div aria-hidden="true" style="height:calc(var(--footer-h) + env(safe-area-inset-bottom));"></div>
+      </section>
 
     <aside>
       <div class="panel about">
@@ -288,6 +308,11 @@
   <button id="closeModal" aria-label="סגירה" style="position:absolute; top:16px; left:20px; color:#fff; font-size:34px; cursor:pointer; opacity:.9; background:none; border:none; line-height:1">×</button>
   <div id="videoContainer"></div>
 </div>
+
+<!-- ✅ Bottom Bar (כבר לא חופף) -->
+<footer class="site-footer" role="contentinfo" aria-label="Copyright">
+  © Lis · Visual Storytelling
+</footer>
 
 <script>
   const modal     = document.getElementById('videoModal');
