@@ -58,58 +58,114 @@
     /* 🎛️ מבנה הבמה */
     .stage{ display:grid; grid-template-columns:1fr var(--sidebar-w); gap:var(--gap); min-height:0; padding-bottom:calc(var(--footer-h) + env(safe-area-inset-bottom) + 16px) }
     .content{ min-height:0 }
-    .panel{ background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius); box-shadow:0 12px 40px rgba(0,0,0,0.35); overflow:hidden }
+
+    /* ✅ Glass ל-panel */
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:var(--radius);
+      box-shadow:0 12px 40px rgba(0,0,0,0.35);
+      overflow:hidden;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
     .scroller{
-      padding-bottom:calc(var(--footer-h) + env(safe-area-inset-bottom) + 30px); min-height:0; max-height:100%; height:100%; overflow:auto; overscroll-behavior:contain; padding:14px; /* ↓ רזרבה לבר */
+      padding-bottom:calc(var(--footer-h) + env(safe-area-inset-bottom) + 30px); min-height:0; max-height:100%; height:100%; overflow:auto; overscroll-behavior:contain; padding:14px;
       padding-bottom:calc(var(--footer-h) + env(safe-area-inset-bottom) + 20px);
       scrollbar-width:none; -ms-overflow-style:none; -webkit-overflow-scrolling:touch }
     .scroller::-webkit-scrollbar{ width:0; height:0 }
 
     /* ✅ תמיד שני טורים לכל הכרטיסים; ה-Showreel תופס שורה מלאה */
-    .grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:var(--gap) }
-    .grid::after{ content:""; display:block; height:calc(var(--footer-h) + env(safe-area-inset-bottom) + 24px); } /* ✅ רווח בטוח מתחת לגריד כדי שלא יסתתר מאחורי ה-footer */
-    
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:var(--gap);
+
+      /* 🎬 אנימציית כניסה עדינה לגריד */
+      opacity:0;
+      transform:translateY(8px);
+      animation:fadeUp .5s ease-out .1s forwards;
+    }
+    .grid::after{ content:""; display:block; height:calc(var(--footer-h) + env(safe-area-inset-bottom) + 24px); }
     .grid > .featured{ grid-column:1 / -1; }
 
+    @keyframes fadeUp{
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
     /* 🎥 Showreel */
-    .featured{ position:relative; border:1px solid rgba(255,255,255,0.10); border-radius:12px; overflow:hidden; background:#000; aspect-ratio:21/9; box-shadow:0 6px 24px rgba(0,0,0,0.35) }
-    .featured video{ width:100%; height:100%; object-fit:cover; object-position:center; display:block }
+    .featured{
+      position:relative; border:1px solid rgba(255,255,255,0.10); border-radius:12px; overflow:hidden; background:#000; aspect-ratio:21/9; box-shadow:0 6px 24px rgba(0,0,0,0.35)
+    }
+    .featured video{
+      width:100%; height:100%; object-fit:cover; object-position:center; display:block;
+      transition:transform .4s ease-out;
+    }
+    /* ✅ Hover חי יותר ל-Showreel */
+    .featured:hover video{
+      transform:scale(1.03);
+    }
+
     .featured .overlay{ position:absolute; inset:auto 0 0 0; padding:12px; background:linear-gradient(180deg, rgba(0,0,0,0),rgba(0,0,0,.55) 30%,rgba(0,0,0,.85)); display:flex; flex-direction:column; gap:6px }
     .featured h2{ margin:0; font-size:clamp(16px, 2.4vw, 18px) }
     .featured .tags{ display:flex; flex-wrap:wrap; gap:8px }
     .tag{ font-size:11px; padding:6px 8px; border-radius:999px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12) }
 
     /* 🎴 כרטיסים */
-    .card{ position:relative; display:block; border:1px solid rgba(255,255,255,0.10); border-radius:12px; overflow:hidden; background:#000; aspect-ratio:16/9; box-shadow:0 6px 24px rgba(0,0,0,0.35); transition:transform .2s,box-shadow .25s,border-color .2s }
+    .card{
+      position:relative; display:block; border:1px solid rgba(255,255,255,0.10); border-radius:12px; overflow:hidden; background:#000; aspect-ratio:16/9; box-shadow:0 6px 24px rgba(0,0,0,0.35); transition:transform .2s,box-shadow .25s,border-color .2s;
+
+      /* ✅ אנימציית כניסה עדינה לכרטיסים */
+      opacity:0;
+      transform:translateY(6px);
+      animation:cardIn .4s ease forwards;
+    }
     .card.tall{ aspect-ratio:9/16 }
+
+    /* stagger קטן */
+    .card:nth-of-type(1){ animation-delay:.05s }
+    .card:nth-of-type(2){ animation-delay:.10s }
+    .card:nth-of-type(3){ animation-delay:.15s }
+    .card:nth-of-type(4){ animation-delay:.20s }
+    .card:nth-of-type(5){ animation-delay:.25s }
+    .card:nth-of-type(6){ animation-delay:.30s }
+    .card:nth-of-type(7){ animation-delay:.35s }
+    .card:nth-of-type(8){ animation-delay:.40s }
+
+    @keyframes cardIn{
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
     .card:hover{ transform:translateY(-3px); border-color:rgba(49,138,178,0.6); box-shadow:0 0 0 1px rgba(49,138,178,0.35),0 12px 30px rgba(0,0,0,0.45) }
     .card img{ width:100%; height:100%; object-fit:cover; display:block }
 
     /* 🧰 סיידבר */
-    aside{ display:grid; grid-template-rows:1fr auto; gap:var(--gap); min-height:0; /* ✅ רווח נגד חפיפה בימין */
+    aside{ display:grid; grid-template-rows:1fr auto; gap:var(--gap); min-height:0;
       padding-bottom:calc(var(--footer-h) + env(safe-area-inset-bottom) + 16px) }
     .about,.contact{ padding:16px }
     .about h3,.contact h3{ margin:0 0 10px; color:#dff2ff }
 
     .btnlink{ display:inline-flex; align-items:center; gap:8px; padding:12px 14px; border-radius:12px; text-decoration:none; background:rgba(20,108,148,0.18); border:1px solid rgba(20,108,148,0.35); color:#eaf6ff; font-weight:600; transition:.18s; min-width:88px; justify-content:center }
     .btnlink:hover{ background:rgba(20,108,148,0.35); border-color:rgba(49,138,178,0.7); transform:translateY(-2px) scale(1.02) }
-    /* ✨ Icon enhancements */
     :root{ --wa:#25D366; --icon-base:#eaf6ff }
-    .btnlink svg{ width:18px; height:18px; opacity:.9; transition:transform .18s ease, opacity .18s ease, color .18s ease }
+    .btnlink svg{ width:18px; height:18px; opacity:.9; transition:transform .18s ease, opacity .18s ease, color .18s ease; flex:0 0 18px }
     .btnlink:hover svg{ transform:translateY(-1px) scale(1.06); opacity:1; color:var(--accent) }
-    /* Brand hovers */
     .btnlink.whatsapp:hover svg{ color:var(--wa) }
-    /* Light/Dark auto for icons only */
     @media (prefers-color-scheme: light){ .btnlink svg{ color:#0b0f14 } }
     @media (prefers-color-scheme: dark){ .btnlink svg{ color:var(--icon-base) } }
-    /* Instagram gradient reveal on hover */
     .btnlink.instagram .ig-grad{ opacity:0; transition:opacity .18s ease }
     .btnlink.instagram .ig-dot-grad{ opacity:0; transition:opacity .18s ease }
     .btnlink.instagram:hover .ig-grad{ opacity:1 }
     .btnlink.instagram:hover .ig-dot-grad{ opacity:1 }
     .btnlink.instagram:hover .ig-base{ opacity:0 }
     .btnlink.instagram:hover .ig-dot-base{ opacity:0 }
-    .btnlink svg{ width:18px; height:18px; flex:0 0 18px }
 
     /* 🪟 מודאל */
     #videoContainer{ display:flex; align-items:center; justify-content:center; max-width:92vw; max-height:88vh; padding:0 10px }
@@ -124,7 +180,6 @@
        📱 התאמות מובייל
        ========================= */
 
-    /* ≤1024px – עמודה אחת למבנה; הגריד נשאר 2 טורים */
     @media (max-width: 1024px){
       html, body{ overflow-y:auto; }
       .shell{
@@ -139,7 +194,6 @@
       .grid > .featured{ grid-column:1 / -1; }
     }
 
-    /* ≤720px – עדיין שני טורים; מקטינים מרווחים וה-Showreel 16:9 */
     @media (max-width: 720px){
       :root{ --gap:14px }
       header{ padding-bottom:8px }
@@ -147,17 +201,17 @@
       .grid > .featured{ grid-column:1 / -1; aspect-ratio:16/9; }
     }
 
-    /* ≤480px – שומרים שני טורים, רק מצמצמים מרווחים/אוואטר */
     @media (max-width: 480px){
       :root{ --gap:10px }
       .avatar{ width:38px; height:38px }
-      .grid{ grid-template-columns:repeat(2, 1fr); gap:var(--gap) } /* 👈 נשאר 2 טורים */
+      .grid{ grid-template-columns:repeat(2, 1fr); gap:var(--gap) }
     }
 
-    /* ♿ העדפת נגישות */
     @media (prefers-reduced-motion: reduce){
-      .card{ transition:none }
+      .card{ transition:none; animation:none !important; }
+      .grid{ animation:none !important; }
       .modal{ transition:none }
+      .featured video{ transition:none; }
     }
 
     /* ✅ Bottom Bar (לא חופף תוכן) */
@@ -168,6 +222,8 @@
       border-top:1px solid rgba(255,255,255,0.12);
       background:#0b0f14;
       color:#e9f3ff; font-size:13px; z-index:900; letter-spacing:.2px;
+      padding-bottom:env(safe-area-inset-bottom);
+      text-align:center;
     }
   </style>
 </head>
@@ -183,14 +239,14 @@
       </div>
     </div>
     <div class="spacer"></div>
-    <a class="btn" href="https://idolis06-stack.github.io/portfolio/contact.html" rel="noopener">צור קשר</a>
+    <a class="btn" href="https://idolis06-stack.github.io/portfolio_main/" rel="noopener">צור קשר</a>
   </header>
 
   <div class="stage">
     <section class="content panel scroller">
       <div class="grid">
 
-        <!-- ✅ Showreel — שורה מלאה -->
+        <!-- Showreel -->
         <div class="featured" data-video="looking-lis.mp4">
           <video autoplay muted loop playsinline preload="metadata" poster="pngs/מחפש.png?v=6">
             <source src="looking-lis.mp4" type="video/mp4" />
@@ -206,7 +262,7 @@
           </div>
         </div>
 
-        <!-- 🎴 כרטיסים — תמיד שניים בשורה -->
+        <!-- כרטיסים -->
         <a class="card" href="#" data-video="proj32_test.mp4">
           <img src="pngs/proj32_test.00_00_19_06.Still001.png" alt="" loading="lazy">
         </a>
@@ -223,7 +279,6 @@
           <img src="pngs/juicy.png" alt="" loading="lazy">
         </a>
 
-        <!-- רילס 9:16 -->
         <a class="card tall" href="#" data-video="UGC 2.mp4">
           <img src="pngs/UGC.png" alt="" loading="lazy">
         </a>
@@ -241,15 +296,17 @@
         </a>
 
       </div>
-        
-        <!-- 👇 רווח נוסף לביטחון (במכשירים בעייתיים) -->
-        <div aria-hidden="true" style="height:calc(var(--footer-h) + env(safe-area-inset-bottom));"></div>
-      </section>
+
+      <div aria-hidden="true" style="height:calc(var(--footer-h) + env(safe-area-inset-bottom));"></div>
+    </section>
 
     <aside>
       <div class="panel about">
         <h3>אודות</h3>
         <p class="bio">עורך וידאו עם ניסיון בתוכן מותג, רילס, פרסומות ו-UGC. גישה נקייה, דינמיקה וקצב — תוצאה מנצחת.</p>
+        <p style="margin:10px 0 0;font-size:12px;color:var(--muted);">
+          תוכנות: DaVinci Resolve · Premiere Pro · After Effects
+        </p>
       </div>
 
       <div class="panel intro" style="padding:16px">
@@ -279,11 +336,9 @@
                   <stop offset="100%" stop-color="#515BD4"/>
                 </linearGradient>
               </defs>
-              <!-- base (currentColor) -->
               <rect class="ig-base" x="3" y="3" width="18" height="18" rx="5"/>
               <circle class="ig-base" cx="12" cy="12" r="4"/>
               <circle class="ig-dot-base" cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
-              <!-- gradient overlay (revealed on hover) -->
               <rect class="ig-grad" x="3" y="3" width="18" height="18" rx="5" stroke="url(#igStroke)"/>
               <circle class="ig-dot-grad" cx="17.5" cy="6.5" r="1.2" fill="url(#igStroke)" stroke="none"/>
             </svg>
@@ -303,15 +358,15 @@
   </div>
 </div>
 
-<!-- ✅ מודאל וידאו -->
+<!-- מודאל וידאו -->
 <div class="modal" id="videoModal" style="position:fixed;inset:0; background:rgba(0,0,0,0.92); display:none; align-items:center; justify-content:center; z-index:999; opacity:0; transition:opacity .25s; padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)">
   <button id="closeModal" aria-label="סגירה" style="position:absolute; top:16px; left:20px; color:#fff; font-size:34px; cursor:pointer; opacity:.9; background:none; border:none; line-height:1">×</button>
   <div id="videoContainer"></div>
 </div>
 
-<!-- ✅ Bottom Bar (כבר לא חופף) -->
+<!-- Bottom Bar -->
 <footer class="site-footer" role="contentinfo" aria-label="Copyright">
-  © Lis · Visual Storytelling
+  © Lis · Visual Storytelling · זמין לפרויקטים חדשים
 </footer>
 
 <script>
@@ -330,7 +385,6 @@
   closeBtn.addEventListener('click', closeModal);
   modal.addEventListener('click', e=>{ if(e.target===modal) closeModal(); });
 
-  /* 🎥 פתיחת וידאו מקומי + הודעת שגיאה ידידותית */
   function openLocalVideo(src){
     const file = encodeURI(src);
     container.innerHTML = `<video id="pv" controls autoplay playsinline preload="metadata">
@@ -345,7 +399,6 @@
     showModal();
   }
 
-  /* 🖱️ קליק — רק לקבצים מקומיים */
   document.addEventListener('click', e=>{
     const el = e.target.closest('[data-video]');
     if(!el) return;
@@ -354,7 +407,6 @@
     if (local) openLocalVideo(local);
   });
 
-  /* ▶️ הפעלת ה-featured בשקט בלולאה */
   window.addEventListener('DOMContentLoaded', ()=>{
     const v = document.querySelector('.featured video');
     if(!v) return;
