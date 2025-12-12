@@ -147,7 +147,7 @@
     .card img{ width:100%; height:100%; object-fit:cover; display:block }
 
     /* 🧰 סיידבר */
-    aside{ display:grid; grid-template-rows:1fr auto; gap:var(--gap); min-height:0;
+    aside{ display:grid; grid-template-rows:auto auto 1fr; gap:var(--gap); min-height:0;
       padding-bottom:calc(var(--footer-h) + env(safe-area-inset-bottom) + 16px) }
     .about,.contact{ padding:16px }
     .about h3,.contact h3{ margin:0 0 10px; color:#dff2ff }
@@ -166,6 +166,47 @@
     .btnlink.instagram:hover .ig-dot-grad{ opacity:1 }
     .btnlink.instagram:hover .ig-base{ opacity:0 }
     .btnlink.instagram:hover .ig-dot-base{ opacity:0 }
+
+    /* ⭐ ביקורות */
+    .panel.testimonials{ padding:16px }
+    .testimonials-title{
+      margin:0 0 10px;
+      color:#dff2ff;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:15px;
+    }
+    .testimonials-title span{
+      font-size:18px;
+    }
+    .testimonials-list{
+      list-style:none;
+      margin:0;
+      padding:0;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .testimonial{
+      font-size:13px;
+      line-height:1.6;
+      position:relative;
+      padding-right:18px;
+    }
+    .testimonial::before{
+      content:"“";
+      position:absolute;
+      right:0;
+      top:-2px;
+      font-size:22px;
+      color:rgba(255,255,255,0.25);
+    }
+    .testimonial-meta{
+      margin-top:2px;
+      font-size:11px;
+      color:var(--muted);
+    }
 
     /* 🪟 מודאל */
     #videoContainer{ display:flex; align-items:center; justify-content:center; max-width:92vw; max-height:88vh; padding:0 10px }
@@ -316,6 +357,33 @@
           <li>קצב, סטוריטלינג, תחושת מותג</li>
           <li>עבודה מהירה ומקצועית</li>
           <li>תהליך נעים ושקוף</li>
+        </ul>
+      </div>
+
+      <!-- ⭐ ביקורות לקוחות -->
+      <div class="panel testimonials">
+        <h3 class="testimonials-title">
+          <span>★</span> מה לקוחות אומרים
+        </h3>
+        <ul class="testimonials-list">
+          <li>
+            <div class="testimonial">
+              "ליס הציל לנו את הקמפיין ברגע האחרון. קיבלנו סרטון חד, מרגש ומותאם בול לשפה של המותג."
+              <div class="testimonial-meta">נועה, מנהלת שיווק</div>
+            </div>
+          </li>
+          <li>
+            <div class="testimonial">
+              "עבודה סופר מקצועית, תקשורת זורמת, וגימור שלא השאיר מקום לתיקונים. נחזור לעבוד יחד."
+              <div class="testimonial-meta">עידו, בעל סטודיו דיגיטל</div>
+            </div>
+          </li>
+          <li>
+            <div class="testimonial">
+              "קיבלנו סדרת רילס שהעלתה מעורבות בצורה משמעותית. ליס מבין מה עובד ברשת."
+              <div class="testimonial-meta">שירן, בעלת עסק ל־E-Commerce</div>
+            </div>
+          </li>
         </ul>
       </div>
 
