@@ -6,6 +6,12 @@
   <title>Lis — Portfolio</title>
   <meta name="description" content="פורטפוליו עורך וידאו — עבודות נבחרות ופרטי יצירת קשר" />
 
+  <!-- ✅ Open Graph (תצוגה בשיתוף) -->
+  <meta property="og:title" content="Lis — Portfolio" />
+  <meta property="og:description" content="עורך וידאו — רילס · פרסומות · תוכן מותג" />
+  <meta property="og:image" content="pngs/524705844_17869241187411495_2786598028850442713_n.jpg" />
+  <meta property="og:type" content="website" />
+
   <!-- ✅ אייקונים -->
   <link rel="icon" type="image/jpeg" href="pngs/524705844_17869241187411495_2786598028850442713_n.jpg" />
   <link rel="apple-touch-icon" href="pngs/524705844_17869241187411495_2786598028850442713_n.jpg" />
@@ -34,7 +40,7 @@
       position:relative;
       overflow-x:hidden;
     }
-    
+
     /* ✨ Animated background gradient */
     body::before{
       content:''; position:fixed; inset:0; z-index:-1;
@@ -45,13 +51,13 @@
       animation:gradientShift 20s ease infinite;
       pointer-events:none;
     }
-    
+
     @keyframes gradientShift{
       0%, 100%{ transform:translate(0, 0) scale(1); opacity:1; }
       33%{ transform:translate(30px, -30px) scale(1.1); opacity:0.8; }
       66%{ transform:translate(-20px, 20px) scale(0.9); opacity:0.9; }
     }
-    
+
     /* ✨ Floating particles effect */
     .particles{
       position:fixed; inset:0; z-index:0; pointer-events:none;
@@ -68,24 +74,8 @@
       90%{ opacity:1; }
       100%{ transform:translateY(-100vh) translateX(50px); opacity:0; }
     }
-    
-    /* ✨ Custom cursor effect */
-    .cursor-dot{
-      width:8px; height:8px; background:var(--accent);
-      border-radius:50%; position:fixed; pointer-events:none;
-      z-index:9999; transition:transform .1s, opacity .2s;
-      mix-blend-mode:difference;
-    }
-    .cursor-outline{
-      width:32px; height:32px; border:2px solid var(--accent);
-      border-radius:50%; position:fixed; pointer-events:none;
-      z-index:9998; transition:all .15s ease-out;
-      mix-blend-mode:difference;
-    }
-    a:hover ~ .cursor-outline, button:hover ~ .cursor-outline,
-    .card:hover ~ .cursor-outline, .btn:hover ~ .cursor-outline{
-      transform:scale(1.5); border-color:var(--accent-2);
-    }
+
+    /* (הוסר) קורסור מותאם אישית - הוסרו הגדרות .cursor-dot ו-.cursor-outline */
 
     /* 🔲 מעטפת (דסקטופ מקורי) */
     body{ overflow-y:auto; overflow-x:hidden; }
@@ -104,6 +94,7 @@
       border-bottom:1px solid rgba(255,255,255,0.06);
       padding-bottom:10px;
       position:relative;
+      z-index:2;
     }
     header::after{
       content:''; position:absolute; bottom:0; right:0; left:0; height:1px;
@@ -138,6 +129,7 @@
     }
     .lead{ margin:0; color:var(--muted); font-size:clamp(11px, 1.8vw, 13px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
     .spacer{ flex:1 }
+
     .btn{
       appearance:none; border:none; cursor:pointer; padding:10px 14px; border-radius:999px;
       background:linear-gradient(180deg, rgba(49,138,178,0.25), rgba(20,108,148,0.25));
@@ -158,18 +150,44 @@
     .btn:active{ transform:translateY(0) scale(0.98) }
     .btn span{ position:relative; z-index:1 }
 
+    /* ✅ ניווט עליון */
+    .topnav{
+      display:flex; gap:10px; flex-wrap:wrap;
+      align-items:center;
+    }
+    .navlink{
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.14);
+      background:rgba(255,255,255,0.04);
+      color:var(--text);
+      font-size:13px;
+      transition:transform .2s ease, background .2s ease, border-color .2s ease;
+      white-space:nowrap;
+    }
+    .navlink:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,0.08);
+      border-color:rgba(49,138,178,0.5);
+    }
+    @media (max-width: 720px){
+      .topnav{ width:100%; justify-content:flex-start }
+    }
+
     /* 🎛️ מבנה הבמה */
-    .stage{ 
-      display:grid; 
-      grid-template-columns:1fr var(--sidebar-w); 
-      gap:var(--gap); 
-      min-height:0; 
+    .stage{
+      display:grid;
+      grid-template-columns:1fr var(--sidebar-w);
+      gap:var(--gap);
+      /* Full viewport height minus header so the two columns can scroll independently */
+      min-height:0;
       height:calc(100vh - var(--header-h) - var(--gap) * 2);
       max-height:calc(100vh - var(--header-h) - var(--gap) * 2);
       overflow:hidden;
     }
-    .content{ 
-      min-height:0; 
+    .content{
+      min-height:0;
       height:100%;
       overflow:hidden;
       display:flex;
@@ -187,7 +205,9 @@
       -webkit-backdrop-filter: blur(16px);
       transition:transform .3s, box-shadow .3s, border-color .3s;
       position:relative;
-      height:100%;
+      /* Panels size to content so the page scrolls as a single flow */
+      min-height:0;
+      height:auto;
       display:flex;
       flex-direction:column;
     }
@@ -207,22 +227,18 @@
     .scroller{
       padding:14px;
       padding-bottom:calc(var(--footer-h) + env(safe-area-inset-bottom) + 20px);
-      min-height:0; 
+      min-height:0;
       flex:1;
-      overflow-y:auto; 
+      overflow-y:auto;
       overflow-x:hidden;
       overscroll-behavior:contain;
-      scrollbar-width:thin; 
+      scrollbar-width:thin;
       scrollbar-color:rgba(20,108,148,0.3) transparent;
-      -ms-overflow-style:none; 
+      -ms-overflow-style:none;
       -webkit-overflow-scrolling:touch;
     }
-    .scroller::-webkit-scrollbar{ 
-      width:6px; 
-    }
-    .scroller::-webkit-scrollbar-track{
-      background:transparent;
-    }
+    .scroller::-webkit-scrollbar{ width:6px; }
+    .scroller::-webkit-scrollbar-track{ background:transparent; }
     .scroller::-webkit-scrollbar-thumb{
       background:rgba(20,108,148,0.3);
       border-radius:3px;
@@ -246,10 +262,7 @@
     .grid > .featured{ grid-column:1 / -1; }
 
     @keyframes fadeUp{
-      to{
-        opacity:1;
-        transform:translateY(0);
-      }
+      to{ opacity:1; transform:translateY(0); }
     }
 
     /* 🎥 Showreel */
@@ -277,12 +290,14 @@
       width:100%; height:100%; object-fit:cover; object-position:center;
       display:block; transition:transform .6s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    /* ✅ Hover חי יותר ל-Showreel */
-    .featured:hover video{
-      transform:scale(1.05);
-    }
+    .featured:hover video{ transform:scale(1.05); }
 
-    .featured .overlay{ position:absolute; inset:auto 0 0 0; padding:12px; background:linear-gradient(180deg, rgba(0,0,0,0),rgba(0,0,0,.55) 30%,rgba(0,0,0,.85)); display:flex; flex-direction:column; gap:6px }
+    .featured .overlay{
+      position:absolute; inset:auto 0 0 0; padding:12px;
+      background:linear-gradient(180deg, rgba(0,0,0,0),rgba(0,0,0,.55) 30%,rgba(0,0,0,.85));
+      display:flex; flex-direction:column; gap:6px;
+      z-index:2;
+    }
     .featured h2{ margin:0; font-size:clamp(16px, 2.4vw, 18px) }
     .featured .overlay p{ margin:0; color:var(--muted); font-size:13px }
     .featured .tags{ display:flex; flex-wrap:wrap; gap:8px }
@@ -309,14 +324,6 @@
     }
     .card:hover .card-overlay{ opacity:1 }
     .card-title{ color:#fff; font-size:14px; font-weight:600; margin:0 }
-    
-    .card::after{
-      content:''; position:absolute; inset:-2px;
-      border-radius:12px; background:linear-gradient(135deg, var(--accent), var(--accent-2));
-      opacity:0; transition:opacity .3s; z-index:-1;
-      filter:blur(8px);
-    }
-    .card:hover::after{ opacity:0.5 }
 
     /* stagger קטן */
     .card:nth-of-type(1){ animation-delay:.05s }
@@ -329,15 +336,9 @@
     .card:nth-of-type(8){ animation-delay:.40s }
 
     @keyframes cardIn{
-      to{
-        opacity:1;
-        transform:translateY(0);
-      }
+      to{ opacity:1; transform:translateY(0); }
     }
 
-    .card{
-      position:relative;
-    }
     .card::after{
       content:''; position:absolute; inset:0;
       background:linear-gradient(135deg, rgba(20,108,148,0.2), transparent);
@@ -361,15 +362,39 @@
 
     /* 🧰 סיידבר */
     aside{
-      display:grid; 
-      grid-template-rows:1fr auto; 
-      gap:var(--gap); 
+      display:grid;
+      grid-template-rows:auto auto;
+      gap:var(--gap);
       min-height:0;
-      height:100%;
-      overflow:hidden;
+      height:auto;
+      overflow:visible;
     }
     .about,.contact,.intro{ padding:16px }
     .about h3,.contact h3,.intro h3{ margin:0 0 10px; color:#dff2ff }
+
+    /* About panel layout */
+    .about-top{ display:flex; align-items:flex-start; gap:10px }
+    .about-text{ flex:1; min-width:0 }
+    .bio-name{ font-weight:700; margin:0 0 6px; font-size:15px }
+    .bio-sub{ margin:0; font-size:14px; color:rgba(255,255,255,0.9) }
+    .about .bio, .about .bio-info{ margin:10px 0; font-size:13px; line-height:1.4 }
+    .about{ word-break:break-word }
+
+    /* Accent utility (match button blue) */
+    .accent{ color:var(--accent); font-weight:700 }
+    .tools .tool-name.accent{ color:var(--accent); font-weight:700 }
+
+    /* Benefits / Intro tweaks */
+    .intro .benefits{ list-style:none; margin:8px 0 0 0; padding:0; direction:rtl }
+    .intro .benefits li{ margin:10px 0; font-size:14px; line-height:1.4; padding-right:22px; position:relative }
+    .intro .benefits li::after{ content:'•'; color:var(--accent); position:absolute; right:0; top:0; font-size:18px }
+    .intro .benefits .accent{ font-weight:700 }
+
+    /* Tools list with icons */
+    .tools{ display:flex; gap:8px; flex-wrap:wrap; align-items:center }
+    .tool{ display:inline-flex; align-items:center; gap:8px; padding:2px 6px; background:rgba(255,255,255,0.02); border-radius:8px }
+    .tool-icon{ width:18px; height:18px; display:block }
+    .tool-name{ font-size:13px; color:rgba(255,255,255,0.95) }
     .intro h3{ display:flex; align-items:center; gap:8px }
     .intro ul{
       margin:12px 0; padding-right:18px; display:flex; flex-direction:column; gap:6px;
@@ -422,6 +447,8 @@
       display:none; align-items:center; justify-content:center;
       z-index:999; opacity:0; transition:opacity .25s;
       padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
     }
     #videoContainer{
       position:relative; display:flex; align-items:center; justify-content:center;
@@ -431,13 +458,39 @@
       max-width:92vw; max-height:88vh; width:auto; height:auto; display:block;
       border-radius:14px; box-shadow:0 20px 50px rgba(0,0,0,.6);
     }
+    /* Make embedded iframes (YouTube) behave like the <video> element so they are responsive
+       and keep a sane aspect ratio (16:9) inside the modal. */
+    .modal iframe{
+      max-width:92vw;
+      max-height:88vh;
+      width:min(92vw, 1280px);
+      height:auto;
+      aspect-ratio:16/9;
+      display:block;
+      border-radius:14px;
+      box-shadow:0 20px 50px rgba(0,0,0,.6);
+    }
+    /* Portrait (phone) modal variant for tall cards */
+    #videoContainer.portrait iframe,
+    #videoContainer.portrait video{
+      aspect-ratio:9/16;
+      width:min(56vw, 420px);
+      max-height:88vh;
+      height:auto;
+      border-radius:14px;
+      box-shadow:0 20px 50px rgba(0,0,0,.6);
+    }
+    @media (max-width: 720px){
+      #videoContainer.portrait iframe,
+      #videoContainer.portrait video{ width:min(92vw, 92vh); }
+    }
     #closeModal{
       position:absolute; top:16px; left:20px; z-index:1000;
       color:#fff; font-size:34px; cursor:pointer; opacity:.9;
       background:none; border:none; line-height:1;
       transition:opacity .2s, transform .2s;
     }
-    #closeModal:hover{ opacity:1; transform:scale(1.1) }
+    #closeModal:hover{ transform:scale(1.2) rotate(90deg); opacity:1; text-shadow:0 0 10px rgba(255,255,255,0.8); }
     .modal-nav{
       position:absolute; top:50%; transform:translateY(-50%);
       background:rgba(255,255,255,0.1); border:none; color:#fff;
@@ -446,7 +499,7 @@
       font-size:24px; opacity:0.7; transition:opacity .2s, background .2s;
       z-index:1000; backdrop-filter:blur(10px);
     }
-    .modal-nav:hover{ opacity:1; background:rgba(255,255,255,0.2) }
+    .modal-nav:hover{ opacity:1; background:rgba(255,255,255,0.2); box-shadow:0 4px 20px rgba(255,255,255,0.3); }
     .modal-nav.prev{ right:20px }
     .modal-nav.next{ left:20px }
     @media (max-width: 720px){
@@ -468,7 +521,18 @@
       transition:width .1s linear;
     }
 
-    .modal .spinner{ width:56px; height:56px; border-radius:50%; border:6px solid rgba(255,255,255,.2); border-top-color:#fff; animation:spin 1s linear infinite }
+    /* Hide arrows and progress bar when modal is in portrait (Shorts) mode */
+    .modal.portrait .modal-nav,
+    .modal.portrait .modal-progress{
+      display:none !important;
+    }
+
+    .modal .spinner{
+      width:56px; height:56px; border-radius:50%;
+      border:6px solid rgba(255,255,255,.2); border-top-color:var(--accent);
+      animation:spin 1s linear infinite;
+      box-shadow:0 0 20px rgba(20,108,148,0.5);
+    }
     @keyframes spin{ to{ transform:rotate(360deg) } }
     .fallback-box{ color:#dfe7ef; text-align:center; line-height:1.6; max-width:520px; padding:6px 10px }
     .fallback-box a{ color:#a7d8ff; font-weight:700; text-decoration:underline }
@@ -484,27 +548,20 @@
         height:auto;
         padding:calc(env(safe-area-inset-top) + var(--gap)) var(--gap) var(--gap) var(--gap);
       }
-      .stage{ 
-        grid-template-columns:1fr; 
+      .stage{
+        grid-template-columns:1fr;
         height:auto;
         max-height:none;
       }
       aside{ order:2; }
-      .content{ 
-        order:1; 
-        height:auto;
-      }
-      .scroller{ 
-        height:auto; 
-        max-height:none; 
-        flex:none;
-      }
+      .content{ order:1; height:auto; }
+      .scroller{ height:auto; max-height:none; flex:none; }
       .grid > .featured{ grid-column:1 / -1; }
     }
 
     @media (max-width: 720px){
       :root{ --gap:14px }
-      header{ padding-bottom:8px }
+      header{ padding-bottom:8px; align-items:flex-start; }
       .grid{ grid-template-columns:repeat(2, 1fr); gap:var(--gap) }
       .grid > .featured{ grid-column:1 / -1; aspect-ratio:16/9; }
     }
@@ -585,16 +642,7 @@
 
     /* ✨ Smooth scroll */
     html{ scroll-behavior:smooth }
-    
-    /* ✨ Scroll reveal animations */
-    .reveal{
-      opacity:0; transform:translateY(30px);
-      transition:opacity .6s ease, transform .6s ease;
-    }
-    .reveal.active{
-      opacity:1; transform:translateY(0);
-    }
-    
+
     /* ✨ Loading skeleton */
     .skeleton{
       background:linear-gradient(90deg,
@@ -609,18 +657,9 @@
       0%{ background-position:200% 0; }
       100%{ background-position:-200% 0; }
     }
-    
-    /* ✨ Text glow effect */
-    .glow-text{
-      text-shadow:0 0 10px rgba(20,108,148,0.5),
-                  0 0 20px rgba(20,108,148,0.3),
-                  0 0 30px rgba(20,108,148,0.2);
-    }
-    
+
     /* ✨ Shimmer effect */
-    .shimmer{
-      position:relative; overflow:hidden;
-    }
+    .shimmer{ position:relative; overflow:hidden; }
     .shimmer::after{
       content:''; position:absolute; inset:-50% -50%;
       background:linear-gradient(45deg,
@@ -633,98 +672,12 @@
       0%{ transform:translateX(-100%) translateY(-100%) rotate(45deg); }
       100%{ transform:translateX(100%) translateY(100%) rotate(45deg); }
     }
-    
-    /* ✨ Scroll reveal animations */
-    .reveal{
-      opacity:0; transform:translateY(30px);
-      transition:opacity .6s ease, transform .6s ease;
-    }
-    .reveal.active{
-      opacity:1; transform:translateY(0);
-    }
-    
-    /* ✨ Loading skeleton */
-    .skeleton{
-      background:linear-gradient(90deg,
-        rgba(255,255,255,0.05) 25%,
-        rgba(255,255,255,0.1) 50%,
-        rgba(255,255,255,0.05) 75%);
-      background-size:200% 100%;
-      animation:loading 1.5s infinite;
-      border-radius:8px;
-    }
-    @keyframes loading{
-      0%{ background-position:200% 0; }
-      100%{ background-position:-200% 0; }
-    }
-    
-    /* ✨ Text glow effect */
-    .glow-text{
-      text-shadow:0 0 10px rgba(20,108,148,0.5),
-                  0 0 20px rgba(20,108,148,0.3),
-                  0 0 30px rgba(20,108,148,0.2);
-    }
-    
-    /* ✨ Shimmer effect */
-    .shimmer{
-      position:relative; overflow:hidden;
-    }
-    .shimmer::after{
-      content:''; position:absolute; inset:-50% -50%;
-      background:linear-gradient(45deg,
-        transparent 30%,
-        rgba(255,255,255,0.1) 50%,
-        transparent 70%);
-      animation:shimmer 3s infinite;
-    }
-    @keyframes shimmer{
-      0%{ transform:translateX(-100%) translateY(-100%) rotate(45deg); }
-      100%{ transform:translateX(100%) translateY(100%) rotate(45deg); }
-    }
-    
+
     /* ✨ אפקטי Focus משופרים */
     *:focus-visible{
       outline:2px solid var(--accent);
       outline-offset:2px;
       border-radius:4px;
-    }
-    
-    /* ✨ אנימציות עדינות נוספות */
-    @keyframes pulse{
-      0%, 100%{ opacity:1 }
-      50%{ opacity:0.7 }
-    }
-    @keyframes shimmer{
-      0%{ background-position:-1000px 0 }
-      100%{ background-position:1000px 0 }
-    }
-    
-    /* ✨ אפקטי Glow נוספים */
-    .featured:hover .overlay h2{
-      text-shadow:0 0 20px rgba(255,255,255,0.5);
-    }
-    
-    /* ✨ אפקטי Loading משופרים */
-    .spinner{
-      border:6px solid rgba(255,255,255,.2);
-      border-top-color:var(--accent);
-      animation:spin 1s linear infinite;
-      box-shadow:0 0 20px rgba(20,108,148,0.5);
-    }
-    
-    /* ✨ אפקטי Modal משופרים */
-    .modal{
-      backdrop-filter:blur(8px);
-      -webkit-backdrop-filter:blur(8px);
-    }
-    #closeModal:hover{
-      transform:scale(1.2) rotate(90deg);
-      opacity:1;
-      text-shadow:0 0 10px rgba(255,255,255,0.8);
-    }
-    .modal-nav:hover{
-      transform:translateY(-50%) scale(1.1);
-      box-shadow:0 4px 20px rgba(255,255,255,0.3);
     }
 
     /* 📊 Pricing Section */
@@ -750,9 +703,7 @@
       -webkit-background-clip:text; -webkit-text-fill-color:transparent;
       background-clip:text;
     }
-    .pricing-header p{
-      color:var(--muted); font-size:16px; margin:0;
-    }
+    .pricing-header p{ color:var(--muted); font-size:16px; margin:0; }
 
     /* 💳 Pricing Cards */
     .pricing-grid{
@@ -766,9 +717,7 @@
       overflow:visible;
     }
     @media (max-width: 1200px){
-      .pricing-grid{
-        grid-template-columns:repeat(2, 1fr);
-      }
+      .pricing-grid{ grid-template-columns:repeat(2, 1fr); }
     }
     .pricing-card{
       background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
@@ -789,7 +738,7 @@
     .pricing-card:nth-child(2){ animation-delay:.2s }
     .pricing-card:nth-child(3){ animation-delay:.3s }
     .pricing-card:nth-child(4){ animation-delay:.4s }
-    
+
     .pricing-card::before{
       content:''; position:absolute; inset:0;
       background:linear-gradient(135deg, rgba(20,108,148,0.1), transparent);
@@ -802,26 +751,23 @@
       border-color:rgba(49,138,178,0.6);
     }
     .pricing-card:hover::before{ opacity:1 }
-    
-    .pricing-card.featured{
+
+    /* ✅ מומלץ (שונה מ-.featured של ה-Showreel כדי למנוע התנגשות) */
+    .pricing-card.is-featured{
       border:2px solid var(--accent);
       box-shadow:0 16px 50px rgba(20,108,148,0.4), 0 0 60px rgba(20,108,148,0.2);
       background:linear-gradient(180deg, rgba(20,108,148,0.12), rgba(20,108,148,0.06));
     }
-    .pricing-card.featured::after{
+    .pricing-card.is-featured::after{
       content:'מומלץ'; position:absolute; top:16px; left:16px;
       background:linear-gradient(135deg, var(--accent), var(--accent-2));
       color:#fff; padding:6px 12px; border-radius:20px;
       font-size:12px; font-weight:700;
       box-shadow:0 4px 12px rgba(20,108,148,0.5);
     }
-    
-    .pricing-card h3{
-      margin:0 0 8px; font-size:24px; color:#dff2ff;
-    }
-    .pricing-card .level{
-      color:var(--muted); font-size:14px; margin-bottom:20px;
-    }
+
+    .pricing-card h3{ margin:0 0 8px; font-size:24px; color:#dff2ff; }
+    .pricing-card .level{ color:var(--muted); font-size:14px; margin-bottom:20px; }
     .pricing-card .price{
       font-size:42px; font-weight:700;
       background:linear-gradient(135deg, #fff, var(--accent-2));
@@ -829,9 +775,7 @@
       background-clip:text;
       margin:0 0 8px;
     }
-    .pricing-card .price-unit{
-      font-size:16px; color:var(--muted); font-weight:400;
-    }
+    .pricing-card .price-unit{ font-size:16px; color:var(--muted); font-weight:400; }
     .pricing-card .features{
       list-style:none; padding:0; margin:24px 0;
       display:flex; flex-direction:column; gap:12px;
@@ -841,7 +785,7 @@
       color:#dfe7ef; font-size:14px; line-height:1.5;
     }
     .pricing-card .features li::before{
-      content:'✓'; 
+      content:'✓';
       width:20px; height:20px;
       background:linear-gradient(135deg, var(--accent), var(--accent-2));
       border-radius:50%;
@@ -854,7 +798,7 @@
       padding:14px;
       font-size:16px;
     }
-    
+
     /* 📝 Info Section */
     .pricing-info{
       background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
@@ -867,211 +811,485 @@
       opacity:0; transform:translateY(20px);
       animation:fadeUp .6s ease-out .5s forwards;
     }
-    .pricing-info h3{
-      margin:0 0 16px; color:#dff2ff; font-size:20px;
-    }
-    .pricing-info p{
-      color:var(--muted); line-height:1.7; margin:0 0 12px;
-    }
-    .pricing-info ul{
-      list-style:none; padding:0; margin:16px 0;
-    }
+    .pricing-info h3{ margin:0 0 16px; color:#dff2ff; font-size:20px; }
+    .pricing-info p{ color:var(--muted); line-height:1.7; margin:0 0 12px; }
+    .pricing-info ul{ list-style:none; padding:0; margin:16px 0; }
     .pricing-info li{
       color:#dfe7ef; padding-right:20px; margin-bottom:8px;
       position:relative;
     }
-    .pricing-info li::before{
-      content:'•'; position:absolute; right:0; color:var(--accent);
-    }
+    .pricing-info li::before{ content:'•'; position:absolute; right:0; color:var(--accent); }
 
     @media (max-width: 768px){
-      .pricing-grid{
-        grid-template-columns:1fr;
-        gap:20px;
-      }
-      .pricing-card{
-        padding:24px 20px;
-        min-width:0;
-      }
+      .pricing-grid{ grid-template-columns:1fr; gap:20px; }
+      .pricing-card{ padding:24px 20px; min-width:0; }
       .pricing-section{
         padding:32px var(--gap) calc(var(--footer-h) + 32px + env(safe-area-inset-bottom));
         margin:32px auto 0;
       }
     }
+
+    /* ✅ Testimonials */
+    .testimonials{
+      max-width:var(--wrap-max);
+      margin:44px auto 0;
+      padding:0 var(--gap);
+    }
+    .testimonials h2{
+      margin:0 0 16px;
+      font-size:clamp(20px, 3vw, 26px);
+      color:#dff2ff;
+    }
+    .testimonials .trust-line{ display:flex; gap:12px; align-items:center; margin-bottom:14px }
+    .trust-line .avg{
+      font-weight:800; font-size:18px; color:var(--accent-2);
+      background:linear-gradient(135deg,#fff,var(--accent-2));
+      -webkit-background-clip:text; background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+    .trust-line .avg-wrap{ display:flex; gap:8px; align-items:center; direction:ltr }
+    .trust-line .stars{ display:inline-flex }
+    .trust-line .count{ color:var(--muted); font-size:13px }
+    .trust-line .more-btn{ margin-left:auto }
+    .more-reviews{
+      overflow:hidden; max-height:0; transition:max-height .45s cubic-bezier(0.2,0.9,0.2,1);
+      margin-top:14px;
+    }
+    .more-reviews.open{ max-height:1600px; }
+    .show-more-row{ display:flex; gap:12px; align-items:center; margin-top:12px }
+    .t-grid{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:18px;
+    /* Rating breakdown removed — hidden per user request */
+    /* Backwards-compat fallbacks */
+    .rb-label{ display:inline-block; width:28px; color:var(--muted); font-size:13px }
+    .rb-bar{ display:inline-block; flex:1; height:8px; background:rgba(255,255,255,0.06); border-radius:999px; overflow:hidden }
+    .rb-fill{ height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-radius:999px }
+    .rb-count{ display:inline-block; width:28px; text-align:right; color:var(--muted); font-size:13px }
+    .t-card{
+      margin:0;
+      padding:18px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.06);
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow:0 10px 30px rgba(4,8,12,0.45);
+      display:flex; flex-direction:column; gap:12px;
+      transition:transform .22s ease, box-shadow .22s ease;
+    }
+    .t-card:hover{ transform:translateY(-6px); box-shadow:0 20px 40px rgba(4,8,12,0.55) }
+
+    .t-top{ display:flex; gap:12px; align-items:center }
+    /* Use a single official badge for all testimonials (no individual profile photos) */
+    .t-top .avatar{
+      width:48px; height:48px; border-radius:50%; overflow:hidden; flex:0 0 48px;
+      border:1px solid rgba(255,255,255,0.06);
+      display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    }
+    .t-top .avatar img{ display:none }
+    .t-top .avatar svg{ width:22px; height:22px; display:block; color:#fff; opacity:0.98 }
+    .t-top .meta{ display:flex; flex-direction:column }
+    .t-top .name{ font-weight:700; color:#fff; font-size:15px }
+    .t-top .role{ color:var(--muted); font-size:13px }
+    .t-top .rating{ margin-left:auto; display:flex; gap:8px; align-items:center }
+    .stars{ display:inline-flex; gap:2px }
+    .stars svg{ width:14px; height:14px; color:#ffcc33; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.4)); }
+    .stars svg.empty{ color:rgba(255,255,255,0.16); opacity:0.55; filter:none }
+    /* Slightly brighter empty star for the trust-line so it doesn't appear black on very dark backgrounds */
+    .trust-line .stars svg.empty{ color:rgba(255,255,255,0.28); opacity:0.6 }
+    .stars svg.dim{ color:#ffcc33; opacity:0.6; filter:none }
+    .verified-badge{
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#fff; font-weight:700; padding:6px 8px; border-radius:999px; font-size:12px;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .verified-badge .verified-icon{ width:16px; height:16px; flex:0 0 16px; display:inline-block }
+    .verified-badge .verified-icon svg{ width:100%; height:100%; display:block }
+
+    .t-card blockquote{ margin:0; color:#e9f6ff; line-height:1.6; font-style:italic; font-size:15px; position:relative }
+    .t-card blockquote::before{ content:'“'; position:absolute; left:6px; top:-6px; font-size:38px; color:rgba(255,255,255,0.06) }
+    .t-card figcaption{ color:var(--muted); font-size:13px; display:flex; gap:8px; align-items:center }
+    .t-card .date{ color:var(--muted); font-size:12px }
+    @media (max-width: 1024px){ .t-grid{ grid-template-columns:repeat(2,1fr); } }
+    @media (max-width: 720px){ .t-grid{ grid-template-columns:1fr; } }
+
+    /* ✅ FAB WhatsApp */
+    .fab-wa{
+      position:fixed;
+      bottom:calc(var(--footer-h) + 14px + env(safe-area-inset-bottom));
+      right:14px;
+      z-index:950;
+      padding:12px 14px;
+      border-radius:999px;
+      background:rgba(37,211,102,0.16);
+      border:1px solid rgba(37,211,102,0.35);
+      color:#eafff2;
+      text-decoration:none;
+      font-weight:800;
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      transition:transform .2s ease, background .2s ease;
+    }
+    .fab-wa:hover{ transform:translateY(-2px); background:rgba(37,211,102,0.22); }
   </style>
 </head>
 
 <body>
-<!-- ✨ Particles background -->
-<div class="particles" id="particles"></div>
+  <div id="top"></div>
 
-<div class="shell">
-  <header>
-    <div class="brand">
-      <div class="avatar"><img src="pngs/524705844_17869241187411495_2786598028850442713_n.jpg" alt="Lis"></div>
-      <div>
-        <h1>Lis</h1>
-        <p class="lead">עורך וידאו — רילס · פרסומות · תוכן מותג</p>
+  <!-- ✨ Particles background -->
+  <div class="particles" id="particles"></div>
+
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <div class="avatar">
+          <img src="pngs/524705844_17869241187411495_2786598028850442713_n.jpg" alt="Lis">
+        </div>
+        <div>
+          <h1>Lis</h1>
+          <p class="lead">עורך וידאו — רילס · פרסומות · תוכן מותג</p>
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+
+      <!-- ✅ ניווט ברור בין חלקי האתר -->
+      <nav class="topnav" aria-label="ניווט ראשי">
+        <a href="#top" class="navlink" data-filter="all">עבודות</a>
+        <a href="#top" class="navlink" data-filter="showreel">Showreel</a>
+        <a href="#pricing" class="navlink">מחירון</a>
+      </nav>
+
+      <!-- CTA removed per user request -->
+    </header>
+
+    <div class="stage">
+      <section class="content panel scroller">
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="all">הכל</button>
+          <button class="filter-btn" data-filter="showreel">Showreel</button>
+        </div>
+
+        <div class="grid">
+          <!-- Showreel -->
+          <div class="featured" data-video="looking-lis.mp4" data-category="showreel">
+            <video autoplay muted loop playsinline preload="metadata" poster="pngs/מחפש.png?v=6">
+              <source src="looking-lis.mp4" type="video/mp4" />
+            </video>
+            <!-- Showreel overlay removed per user request -->
+              <h2>Showreel</h2>
+              <p>מיקסים לקמפיינים, רילס ומותגים — דגש על תחושה, קצב וסיפור.</p>
+
+          </div>
+
+          <!-- כרטיסים -->
+          <a class="card" href="#" data-video="proj32_test.mp4" data-category="campaign">
+            <img src="pngs/proj32_test.00_00_19_06.Still001.png" alt="פרויקט קמפיין" loading="lazy" decoding="async">
+            <div class="card-overlay"><span class="card-title">פרויקט קמפיין</span></div>
+          </a>
+
+          <a class="card" href="#" data-video="trymp4.mp4" data-category="reels">
+            <img src="pngs/ג7.Still002.png" alt="רילס" loading="lazy" decoding="async">
+            <div class="card-overlay"><span class="card-title">רילס</span></div>
+          </a>
+
+          <a class="card" href="#" data-video="kkkV3.mp4" data-category="campaign">
+            <img src="pngs/KV.png" alt="קמפיין מותג" loading="lazy" decoding="async">
+            <div class="card-overlay"><span class="card-title">קמפיין מותג</span></div>
+          </a>
+
+          <a class="card" href="#" data-video="JUsFFFFF (1).mp4" data-category="reels">
+            <img src="pngs/juicy.png" alt="רילס" loading="lazy" decoding="async">
+            <div class="card-overlay"><span class="card-title">רילס</span></div>
+          </a>
+
+          <a class="card tall" href="#" data-video="UGC 2.mp4" data-category="ugc">
+            <img src="pngs/UGC.png" alt="UGC" loading="lazy" decoding="async">
+            <div class="card-overlay"><span class="card-title">UGC</span></div>
+          </a>
+
+          <a class="card tall" href="#" data-video="סרטון 4 - נאמי בלאסט .mp4" data-category="campaign">
+            <img src="pngs/all006.png" alt="קמפיין" loading="lazy" decoding="async">
+            <div class="card-overlay"><span class="card-title">קמפיין</span></div>
+          </a>
+
+          <a class="card tall" href="#" data-video="Sequence 01_1.mp4" data-category="reels">
+            <img src="pngs/3wb.png" alt="רילס" loading="lazy" decoding="async">
+            <div class="card-overlay"><span class="card-title">רילס</span></div>
+          </a>
+
+          <a class="card tall" href="#" data-video="videos/carp.mp4" data-category="campaign">
+            <img src="pngs/carp.png" alt="קמפיין" loading="lazy" decoding="async">
+            <div class="card-overlay"><span class="card-title">קמפיין</span></div>
+          </a>
+
+          <!-- דוגמה: הוספת סרטון יוטיוב (כולל סרטונים לא רשומים)
+               אפשר להשתמש ב: data-video="youtube:VIDEO_ID" או data-video="https://youtu.be/VIDEO_ID"
+               החליפו את VIDEO_ID במזהה הסרטון שלכם (11 תווים). */ -->
+          <a class="card" href="#" data-video="youtube:yAY0bCW2RAU" data-category="reels">
+            <img src="pngs/juicy.png" alt="YouTube - סרטון" loading="lazy" decoding="async">
+            <div class="card-overlay"><span class="card-title">YouTube — סרטון (לא רשום)</span></div>
+          </a>
+
+          <!-- הוספת סרטון יוטיוב קצר (Shorts) כפי שהתקבל מהמשתמש -->
+          <a class="card tall" href="#" data-video="youtube:Oug_e6Jk0S0" data-category="reels">
+            <img src="https://i.ytimg.com/vi/Oug_e6Jk0S0/maxresdefault.jpg" alt="YouTube Shorts (vertical)" loading="lazy" decoding="async">
+            <div class="card-overlay"><span class="card-title">YouTube Shorts</span></div>
+          </a>
+
+          <!-- הוספת סרטון יוטיוב קצר נוסף (Shorts) כפי שביקש המשתמש -->
+          <a class="card tall" href="#" data-video="youtube:5DTcjBR4LRo" data-category="reels">
+            <img src="https://i.ytimg.com/vi/5DTcjBR4LRo/maxresdefault.jpg" alt="YouTube Shorts (vertical)" loading="lazy" decoding="async">
+            <div class="card-overlay"><span class="card-title">YouTube Shorts</span></div>
+          </a>
+
+          <!-- עוד YouTube Shorts כפי שהתבקש -->
+          <a class="card tall" href="#" data-video="youtube:kUu0gr3Uq5Y" data-category="reels">
+            <img src="https://i.ytimg.com/vi/kUu0gr3Uq5Y/maxresdefault.jpg" alt="YouTube Shorts (vertical)" loading="lazy" decoding="async">
+            <div class="card-overlay"><span class="card-title">YouTube Shorts</span></div>
+          </a>
+        </div>
+
+        <div class="footer-spacer" aria-hidden="true"></div>
+      </section>
+
+      <aside>
+        <div class="panel about">
+          <h3>אודות</h3>
+          <div class="about-top">
+            <div class="about-text">
+              <p class="bio-name">היי, אני ליס – עורך וידאו שחי ונושם את עולם הדיגיטל.</p>
+                <p class="bio-sub">מה אני עושה? הופך רעיונות לתוכן ויזואלי מהפנט.</p>
+              </div>
+            </div>
+
+            <p class="bio">התמחות: רילס, סרטוני UGC, גיימינג ופרסומות קצרות.</p>
+
+            <p class="bio-info tools">הכלים שלי: 
+              <span class="tool"><img src="pngs/premiere.svg" alt="Premiere Pro" class="tool-icon"/> <span class="tool-name accent">Premiere Pro</span></span>
+              <span class="tool"><img src="pngs/aftereffects.svg" alt="After Effects" class="tool-icon"/> <span class="tool-name accent">After Effects</span></span>
+              <span class="tool"><img src="pngs/davinci.svg" alt="DaVinci Resolve" class="tool-icon"/> <span class="tool-name accent">DaVinci Resolve</span></span>
+            </p>
+
+            <p class="bio">הערך המוסף: עריכה שמבינה קהל, קצב שלא משאיר רגע משעמם ותוצאה סופית בסטנדרט הגבוה ביותר.</p>
+          </div>
+
+          <div class="panel intro">
+            <h3>למה דווקא אני?</h3>
+            <ul class="benefits">
+              <li><span class="accent">הבנה ויראלית:</span> אני יודע מה גורם לאנשים לעצור, להגיב ולשתף.</li>
+              <li><span class="accent">קצב בלתי מתפשר:</span> עריכה דינמית ששומרת על רמת עניין גבוהה לכל אורך הסרטון.</li>
+              <li><span class="accent">ראש קריאייטיבי:</span> אני לא רק "לוחץ על כפתורים", אני עוזר לכם לדייק את הקונספט.</li>
+              <li><span class="accent">איכות ללא פשרות:</span> תוצאה נקייה, מקצועית ומהירה, מותאמת לסטנדרטים של 2024.</li>
+            </ul>
+          </div>
+
+        <div class="panel contact" id="contact">
+          <h3>צור קשר</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <a class="btnlink" href="#pricing" style="background:linear-gradient(135deg, rgba(20,108,148,0.25), rgba(49,138,178,0.25));">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              מחירון
+            </a>
+
+            <a class="btnlink mail" href="#" onclick="navigator.clipboard.writeText('idolis06@gmail.com');alert('📧 המייל הועתק');">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>
+              מייל
+            </a>
+
+            <a class="btnlink instagram" href="https://www.instagram.com/lis.w0rk/" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <defs>
+                  <linearGradient id="igStroke" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#F58529"/>
+                    <stop offset="50%" stop-color="#DD2A7B"/>
+                    <stop offset="75%" stop-color="#8134AF"/>
+                    <stop offset="100%" stop-color="#515BD4"/>
+                  </linearGradient>
+                </defs>
+                <rect class="ig-base" x="3" y="3" width="18" height="18" rx="5"/>
+                <circle class="ig-base" cx="12" cy="12" r="4"/>
+                <circle class="ig-dot-base" cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+                <rect class="ig-grad" x="3" y="3" width="18" height="18" rx="5" stroke="url(#igStroke)"/>
+                <circle class="ig-dot-grad" cx="17.5" cy="6.5" r="1.2" fill="url(#igStroke)" stroke="none"/>
+              </svg>
+              אינסטגרם
+            </a>
+
+            <a class="btnlink whatsapp" href="https://wa.me/972542537273" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.3-4A9 9 0 1112 21a9 9 0 01-4.7-1.3L3 21z"></path><path d="M9.5 9.8c-.5 1.9 3.2 5.5 5.1 5.1 1 0 1.7-.7 1.7-1.3 0-.3-.2-.6-.5-.7l-1-.5c-.3-.1-.6 0-.8.2l-.3.3c-.2.2-.5.2-.7 0-1-.6-1.7-1.4-2.2-2.2-.2-.2-.2-.5 0-.7l.3-.3c.2-.2.3-.5.2-.8l-.5-1c-.1-.3-.4-.5-.7-.5-.6 0-1.2.7-1.1 1.2z"></path></svg>
+              WhatsApp
+            </a>
+
+            <a class="btnlink phone" href="tel:0542537273">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.86 19.86 0 013 4.18 2 2 0 015 2h3a2 2 0 012 1.72c.12.9.43 2.22.9 3.2a2 2 0 01-.45 2.11l-1.27 1.27a16 16 0 007.16 7.16l1.27-1.27a2 2 0 012.11-.45c.98.47 2.3.78 3.2.9A2 2 0 0122 16.92z"></path></svg>
+              שיחה
+            </a>
+
+            <!-- ✅ שיתוף (יעבוד רק במכשירים תומכים) -->
+            <button class="btnlink" id="shareBtn" type="button" style="border-color:rgba(255,255,255,0.18)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"></path><path d="M16 6l-4-4-4 4"></path><path d="M12 2v14"></path></svg>
+              שתף
+            </button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ✅ המלצות -->
+  <section class="testimonials" aria-label="המלצות">
+    <h2>לקוחות מספרים</h2>
+    <div class="trust-line">
+        <div class="avg-wrap">
+        <div class="avg">4.7</div>
+        <div class="stars" aria-hidden="true" title="ממוצע 4.7 מתוך 5">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" class="empty" aria-hidden="true"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+        </div>
+      </div>
+      <div class="count">• 6 ביקורות</div>
+      <!-- rating-breakdown removed per user request -->
+      <div class="show-more-row">
+        <button id="toggleReviews" class="btnlink more-btn" aria-expanded="false" aria-controls="moreReviews">עוד ביקורות</button>
       </div>
     </div>
-    <div class="spacer"></div>
-    <a class="btn" href="#pricing"><span>מחירון</span></a>
-    <a class="btn" href="https://idolis06-stack.github.io/portfolio_main/" rel="noopener"><span>צור קשר</span></a>
-  </header>
 
-  <div class="stage">
-    <section class="content panel scroller">
-      <div class="filter-bar">
-        <button class="filter-btn active" data-filter="all">הכל</button>
-        <button class="filter-btn" data-filter="showreel">Showreel</button>
-        <button class="filter-btn" data-filter="reels">רילס</button>
-        <button class="filter-btn" data-filter="campaign">קמפיינים</button>
-        <button class="filter-btn" data-filter="ugc">UGC</button>
-      </div>
-      <div class="grid">
-
-        <!-- Showreel -->
-        <div class="featured" data-video="looking-lis.mp4" data-category="showreel">
-          <video autoplay muted loop playsinline preload="metadata" poster="pngs/מחפש.png?v=6">
-            <source src="looking-lis.mp4" type="video/mp4" />
-          </video>
-          <div class="overlay">
-            <h2>Showreel</h2>
-            <p>מיקסים לקמפיינים, רילס ומותגים — דגש על תחושה, קצב וסיפור.</p>
-            <div class="tags">
-              <span class="tag">After Effects</span>
-              <span class="tag">DaVinci Resolve</span>
-              <span class="tag">Premiere</span>
+    <div class="t-grid">
+      <figure class="t-card">
+        <div class="t-top">
+          <div class="avatar" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5z" fill="#fff"/><path d="M3 21c0-3.866 3.582-7 9-7s9 3.134 9 7v1H3v-1z" fill="#fff"/></svg>
+          </div>
+          <div class="meta"><div class="name">הילה כהן</div></div>
+            <div class="rating" data-rating="5" aria-label="דירוג 5 מתוך 5">
+            <div class="stars" aria-hidden="true" title="דירוג 5 מתוך 5">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" style="opacity:.45"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+            </div>
+            <div class="verified-badge" aria-hidden="true" title="מאומת">
+              <span class="verified-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1E90FF"/><path d="M7.8 12.2l2.7 2.7 5.7-6.6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span>מאומת</span>
             </div>
           </div>
         </div>
+        <blockquote>קצב מדויק, ויזואל נקי ותהליך מאוד נעים — התוצאה הייתה מעבר לציפיות.</blockquote>
+        <figcaption>— הילה כהן <span class="date">· יוני 2025</span></figcaption>
+      </figure>
 
-        <!-- כרטיסים -->
-        <a class="card" href="#" data-video="proj32_test.mp4" data-category="campaign">
-          <img src="pngs/proj32_test.00_00_19_06.Still001.png" alt="" loading="lazy">
-          <div class="card-overlay">
-            <span class="card-title">פרויקט קמפיין</span>
+      <figure class="t-card">
+        <div class="t-top">
+          <div class="avatar" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5z" fill="#fff"/><path d="M3 21c0-3.866 3.582-7 9-7s9 3.134 9 7v1H3v-1z" fill="#fff"/></svg>
           </div>
-        </a>
-
-        <a class="card" href="#" data-video="trymp4.mp4" data-category="reels">
-          <img src="pngs/ג7.Still002.png" alt="" loading="lazy">
-          <div class="card-overlay">
-            <span class="card-title">רילס</span>
+          <div class="meta"><div class="name">דניאל לוי</div></div>
+          <div class="rating" data-rating="4" aria-label="דירוג 4 מתוך 5">
+            <div class="stars" aria-hidden="true" title="דירוג 4 מתוך 5">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+            </div>
+            <!-- badge removed -->
           </div>
-        </a>
-
-        <a class="card" href="#" data-video="kkkV3.mp4" data-category="campaign">
-          <img src="pngs/KV.png" alt="" loading="lazy">
-          <div class="card-overlay">
-            <span class="card-title">קמפיין מותג</span>
-          </div>
-        </a>
-
-        <a class="card" href="#" data-video="JUsFFFFF (1).mp4" data-category="reels">
-          <img src="pngs/juicy.png" alt="" loading="lazy">
-          <div class="card-overlay">
-            <span class="card-title">רילס</span>
-          </div>
-        </a>
-
-        <a class="card tall" href="#" data-video="UGC 2.mp4" data-category="ugc">
-          <img src="pngs/UGC.png" alt="" loading="lazy">
-          <div class="card-overlay">
-            <span class="card-title">UGC</span>
-          </div>
-        </a>
-
-        <a class="card tall" href="#" data-video="סרטון 4 - נאמי בלאסט .mp4" data-category="campaign">
-          <img src="pngs/all006.png" alt="" loading="lazy">
-          <div class="card-overlay">
-            <span class="card-title">קמפיין</span>
-          </div>
-        </a>
-
-        <a class="card tall" href="#" data-video="Sequence 01_1.mp4" data-category="reels">
-          <img src="pngs/3wb.png" alt="" loading="lazy">
-          <div class="card-overlay">
-            <span class="card-title">רילס</span>
-          </div>
-        </a>
-
-        <a class="card tall" href="#" data-video="videos/carp.mp4" data-category="campaign">
-          <img src="pngs/carp.png" alt="" loading="lazy">
-          <div class="card-overlay">
-            <span class="card-title">קמפיין</span>
-          </div>
-        </a>
-
-      </div>
-
-      <div class="footer-spacer" aria-hidden="true"></div>
-    </section>
-
-    <aside>
-      <div class="panel about">
-        <h3>אודות</h3>
-        <p class="bio">עורך וידאו עם ניסיון בתוכן מותג, רילס, פרסומות ו-UGC. גישה נקייה, דינמיקה וקצב — תוצאה מנצחת.</p>
-        <p class="bio-info">
-          תוכנות: DaVinci Resolve · Premiere Pro · After Effects
-        </p>
-      </div>
-
-      <div class="panel intro">
-        <h3>למה דווקא אני?</h3>
-        <ul>
-          <li>התמחות ברילס וקמפיינים</li>
-          <li>קצב, סטוריטלינג, תחושת מותג</li>
-          <li>עבודה מהירה ומקצועית</li>
-          <li>תהליך נעים ושקוף</li>
-        </ul>
-      </div>
-
-      <div class="panel contact">
-        <h3>צור קשר</h3>
-        <div style="display:flex;flex-wrap:wrap;gap:10px">
-          <a class="btnlink" href="#pricing" style="background:linear-gradient(135deg, rgba(20,108,148,0.25), rgba(49,138,178,0.25));">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-            מחירון
-          </a>
-          <a class="btnlink mail" href="#" onclick="navigator.clipboard.writeText('idolis06@gmail.com');alert('📧 המייל הועתק');">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>
-            מייל
-          </a>
-          <a class="btnlink instagram" href="https://www.instagram.com/lis.w0rk/" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <defs>
-                <linearGradient id="igStroke" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="#F58529"/>
-                  <stop offset="50%" stop-color="#DD2A7B"/>
-                  <stop offset="75%" stop-color="#8134AF"/>
-                  <stop offset="100%" stop-color="#515BD4"/>
-                </linearGradient>
-              </defs>
-              <rect class="ig-base" x="3" y="3" width="18" height="18" rx="5"/>
-              <circle class="ig-base" cx="12" cy="12" r="4"/>
-              <circle class="ig-dot-base" cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
-              <rect class="ig-grad" x="3" y="3" width="18" height="18" rx="5" stroke="url(#igStroke)"/>
-              <circle class="ig-dot-grad" cx="17.5" cy="6.5" r="1.2" fill="url(#igStroke)" stroke="none"/>
-            </svg>
-            אינסטגרם
-          </a>
-          <a class="btnlink whatsapp" href="https://wa.me/972542537273" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.3-4A9 9 0 1112 21a9 9 0 01-4.7-1.3L3 21z"></path><path d="M9.5 9.8c-.5 1.9 3.2 5.5 5.1 5.1 1 0 1.7-.7 1.7-1.3 0-.3-.2-.6-.5-.7l-1-.5c-.3-.1-.6 0-.8.2l-.3.3c-.2.2-.5.2-.7 0-1-.6-1.7-1.4-2.2-2.2-.2-.2-.2-.5 0-.7l.3-.3c.2-.2.3-.5.2-.8l-.5-1c-.1-.3-.4-.5-.7-.5-.6 0-1.2.7-1.1 1.2z"></path></svg>
-            WhatsApp
-          </a>
-          <a class="btnlink phone" href="tel:0542537273">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.86 19.86 0 013 4.18 2 2 0 015 2h3a2 2 0 012 1.72c.12.9.43 2.22.9 3.2a2 2 0 01-.45 2.11l-1.27 1.27a16 16 0 007.16 7.16l1.27-1.27a2 2 0 012.11-.45c.98.47 2.3.78 3.2.9A2 2 0 0122 16.92z"></path></svg>
-            שיחה
-          </a>
         </div>
-      </div>
-    </aside>
-  </div>
-</div>
+        <blockquote>שדרוג אמיתי לתוכן שלנו — המעורבות והתגובות קפצו כבר אחרי פרסום ראשון.</blockquote>
+        <figcaption>— דניאל לוי <span class="date">· מרץ 2025</span></figcaption>
+      </figure>
 
-<!-- מחירון -->
-<section id="pricing" class="pricing-section">
+      <figure class="t-card">
+        <div class="t-top">
+          <div class="avatar" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5z" fill="#fff"/><path d="M3 21c0-3.866 3.582-7 9-7s9 3.134 9 7v1H3v-1z" fill="#fff"/></svg>
+          </div>
+          <div class="meta"><div class="name">נועה רוזנבלום</div></div>
+          <div class="rating" data-rating="4" aria-label="דירוג 4 מתוך 5">
+              <div class="stars" aria-hidden="true" title="דירוג 4 מתוך 5">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+              </div>
+            <!-- badge removed -->
+          </div>
+        </div>
+        <blockquote>עבודה זריזה, תקשורת נהדרת ותוצאה שמדברת בעד עצמה — ממליצה בחום.</blockquote>
+        <figcaption>— נועה רוזנבלום <span class="date">· נוב' 2024</span></figcaption>
+      </figure>
+    </div>
+    <!-- Hidden extra reviews (יתווסף/נחשף בלחיצה על 'עוד ביקורות') -->
+    <div id="moreReviews" class="more-reviews" aria-hidden="true">
+      <div class="t-grid">
+        <figure class="t-card">
+          <div class="t-top">
+            <div class="avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5z" fill="#fff"/><path d="M3 21c0-3.866 3.582-7 9-7s9 3.134 9 7v1H3v-1z" fill="#fff"/></svg>
+            </div>
+            <div class="meta"><div class="name">עומר גרוס</div></div>
+            <div class="rating" data-rating="3" aria-label="דירוג 4 מתוך 5">
+                <div class="stars" aria-hidden="true" title="דירוג 4 מתוך 5">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+                </div>
+            </div>
+          </div>
+          <blockquote>מסירה מהירה, תקשורת מצוינת ותוצאה מקצועית — אשכור שוב.</blockquote>
+          <figcaption>— עומר גרוס <span class="date">· ספט' 2024</span></figcaption>
+        </figure>
+
+        <figure class="t-card">
+          <div class="t-top">
+            <div class="avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5z" fill="#fff"/><path d="M3 21c0-3.866 3.582-7 9-7s9 3.134 9 7v1H3v-1z" fill="#fff"/></svg>
+            </div>
+            <div class="meta"><div class="name">רוני סבן</div></div>
+            <div class="rating" data-rating="4" aria-label="דירוג 4 מתוך 5">
+                <div class="stars" aria-hidden="true" title="דירוג 4 מתוך 5">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+                </div>
+            </div>
+          </div>
+          <blockquote>עבודה מקצועית, שמירה על לוחות זמנים ותוצאה שקופה וברורה.</blockquote>
+          <figcaption>— רוני סבן <span class="date">· יולי 2024</span></figcaption>
+        </figure>
+
+        <figure class="t-card">
+          <div class="t-top">
+            <div class="avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5z" fill="#fff"/><path d="M3 21c0-3.866 3.582-7 9-7s9 3.134 9 7v1H3v-1z" fill="#fff"/></svg>
+            </div>
+            <div class="meta"><div class="name">יואב כהן</div></div>
+            <div class="rating" data-rating="5" aria-label="דירוג 5 מתוך 5">
+              <div class="stars" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>
+              </div>
+            </div>
+          </div>
+          <blockquote>קובץ מוקפד, תיקונים מהירים ויחס מקצועי — ממליץ בחום.</blockquote>
+          <figcaption>— יואב כהן <span class="date">· מאי 2024</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- מחירון -->
+  <section id="pricing" class="pricing-section">
     <div class="pricing-header">
       <h2>מחירון עריכת וידאו</h2>
       <p>מחירים שקופים לפי רמות עריכה שונות — בחר את החבילה המתאימה לך</p>
@@ -1091,13 +1309,13 @@
           <li>עד 2 סבבי תיקונים</li>
           <li>מסירה עד 3 ימי עסקים</li>
         </ul>
-        <a href="https://wa.me/972542537273?text=שלום, אני מעוניין בעריכה בסיסית" class="btn btn-order" target="_blank">
+        <a href="https://wa.me/972542537273?text=שלום, אני מעוניין בעריכה בסיסית" class="btn btn-order" target="_blank" rel="noopener">
           <span>הזמן עכשיו</span>
         </a>
       </div>
 
       <!-- רמה בינונית -->
-      <div class="pricing-card featured">
+      <div class="pricing-card is-featured">
         <h3>עריכה מקצועית</h3>
         <div class="level">רמה 2</div>
         <div class="price">₪1,200<span class="price-unit"> / פרויקט</span></div>
@@ -1110,7 +1328,7 @@
           <li>עד 3 סבבי תיקונים</li>
           <li>מסירה עד 5 ימי עסקים</li>
         </ul>
-        <a href="https://wa.me/972542537273?text=שלום, אני מעוניין בעריכה מקצועית" class="btn btn-order" target="_blank">
+        <a href="https://wa.me/972542537273?text=שלום, אני מעוניין בעריכה מקצועית" class="btn btn-order" target="_blank" rel="noopener">
           <span>הזמן עכשיו</span>
         </a>
       </div>
@@ -1130,7 +1348,7 @@
           <li>מסירה עד 7 ימי עסקים</li>
           <li>ייעוץ יצירתי</li>
         </ul>
-        <a href="https://wa.me/972542537273?text=שלום, אני מעוניין בעריכה פרימיום" class="btn btn-order" target="_blank">
+        <a href="https://wa.me/972542537273?text=שלום, אני מעוניין בעריכה פרימיום" class="btn btn-order" target="_blank" rel="noopener">
           <span>הזמן עכשיו</span>
         </a>
       </div>
@@ -1151,7 +1369,7 @@
           <li>ייעוץ יצירתי מלא</li>
           <li>תמיכה 24/7</li>
         </ul>
-        <a href="https://wa.me/972542537273?text=שלום, אני מעוניין בעריכה VIP" class="btn btn-order" target="_blank">
+        <a href="https://wa.me/972542537273?text=שלום, אני מעוניין בעריכה VIP" class="btn btn-order" target="_blank" rel="noopener">
           <span>הזמן עכשיו</span>
         </a>
       </div>
@@ -1175,424 +1393,520 @@
     </div>
   </section>
 
-<!-- מודאל וידאו -->
-<div class="modal" id="videoModal">
-  <button id="closeModal" aria-label="סגירה">×</button>
-  <button class="modal-nav prev" id="prevVideo" aria-label="קודם">‹</button>
-  <button class="modal-nav next" id="nextVideo" aria-label="הבא">›</button>
-  <div id="videoContainer">
-    <div class="modal-loading" id="modalLoading">
-      <div class="spinner"></div>
+  <!-- מודאל וידאו -->
+  <div class="modal" id="videoModal">
+    <button id="closeModal" aria-label="סגירה">×</button>
+    <button class="modal-nav prev" id="prevVideo" aria-label="קודם">‹</button>
+    <button class="modal-nav next" id="nextVideo" aria-label="הבא">›</button>
+    <div id="videoContainer">
+      <div class="modal-loading" id="modalLoading">
+        <div class="spinner"></div>
+      </div>
+      <div class="modal-progress">
+        <div class="modal-progress-bar" id="progressBar"></div>
+      </div>
     </div>
-    <div class="modal-progress">
-      <div class="modal-progress-bar" id="progressBar"></div>
-    </div>
+    <div class="swipe-hint">← החלק לניווט →</div>
   </div>
-  <div class="swipe-hint">← החלק לניווט →</div>
-</div>
 
-<!-- Bottom Bar -->
-<footer class="site-footer" role="contentinfo" aria-label="Copyright">
-  © Lis · Visual Storytelling · זמין לפרויקטים חדשים
-</footer>
+  <!-- Bottom Bar -->
+  <footer class="site-footer" role="contentinfo" aria-label="Copyright">
+    © Lis · Visual Storytelling · זמין לפרויקטים חדשים
+  </footer>
 
-<script>
-  // 🎬 מערכת וידאו משופרת
-  const modal = document.getElementById('videoModal');
-  const container = document.getElementById('videoContainer');
-  const closeBtn = document.getElementById('closeModal');
-  const prevBtn = document.getElementById('prevVideo');
-  const nextBtn = document.getElementById('nextVideo');
-  
-  function getLoadingEl(){ return document.getElementById('modalLoading'); }
-  function getProgressBar(){ return document.getElementById('progressBar'); }
-  
-  let currentVideoIndex = 0;
-  let videoElements = [];
-  let currentVideo = null;
-  let touchStartX = 0;
-  let touchEndX = 0;
+  <!-- ✅ WhatsApp FAB -->
+  <a class="fab-wa" href="https://wa.me/972542537273?text=היי, אשמח לשמוע על מחיר וזמינות" target="_blank" rel="noopener" aria-label="WhatsApp">
+    WhatsApp
+  </a>
 
-  // איסוף כל הוידאואים
-  function collectVideos(){
-    const featured = document.querySelector('.featured[data-video]');
-    const cards = Array.from(document.querySelectorAll('.card[data-video]'));
-    videoElements = [];
-    if(featured) videoElements.push(featured);
-    videoElements.push(...cards);
-  }
+  <script>
+    // 🎬 מערכת וידאו משופרת
+    const modal = document.getElementById('videoModal');
+    const container = document.getElementById('videoContainer');
+    const closeBtn = document.getElementById('closeModal');
+    const prevBtn = document.getElementById('prevVideo');
+    const nextBtn = document.getElementById('nextVideo');
 
-  // מציאת אינדקס וידאו נוכחי
-  function findVideoIndex(element){
-    return videoElements.findIndex(el => el === element);
-  }
-
-  // הצגת מודאל
-  function showModal(){
-    modal.style.display='flex';
-    document.body.style.overflow='hidden';
-    requestAnimationFrame(()=> modal.style.opacity='1');
-  }
-
-  // סגירת מודאל
-  function closeModal(){
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/7dfa3530-1805-4981-a9a8-fc6d1562ad92',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:566',message:'closeModal called',data:{currentVideoExists:!!currentVideo},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-    // #endregion
-    
-    // עוצר ומסיר את כל הווידאואים
-    const allVideos = container.querySelectorAll('video');
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/7dfa3530-1805-4981-a9a8-fc6d1562ad92',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:570',message:'Stopping and removing videos',data:{count:allVideos.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-    // #endregion
-    allVideos.forEach(v => {
-      v.pause();
-      v.src = ''; // מפסיק טעינה
-      v.load(); // איפוס
-      v.remove();
+    // Mark tall cards as portrait-hinted so detection doesn't depend entirely on sizing heuristics
+    document.addEventListener('DOMContentLoaded', ()=>{
+      document.querySelectorAll('.card.tall').forEach(c => c.setAttribute('data-orientation', 'portrait'));
     });
-    
-    // מסיר גם הודעות שגיאה
-    const fallbackBoxes = container.querySelectorAll('.fallback-box');
-    fallbackBoxes.forEach(box => box.remove());
-    
-    currentVideo = null;
-    modal.style.opacity='0';
-    document.body.style.overflow='';
-    
-    setTimeout(()=>{
-      modal.style.display='none';
-      // שחזור loading ו-progress
-      const existingLoading = container.querySelector('#modalLoading');
-      const existingProgress = container.querySelector('.modal-progress');
-      if(!existingLoading){
-        container.insertAdjacentHTML('afterbegin', `
-          <div class="modal-loading" id="modalLoading">
-            <div class="spinner"></div>
-          </div>
-        `);
-      }
-      if(!existingProgress){
-        container.insertAdjacentHTML('beforeend', `
-          <div class="modal-progress">
-            <div class="modal-progress-bar" id="progressBar"></div>
-          </div>
-        `);
-      }
-    }, 200);
-  }
 
-  // פתיחת וידאו
-  function openLocalVideo(src, index){
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/7dfa3530-1805-4981-a9a8-fc6d1562ad92',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:595',message:'openLocalVideo called',data:{src,index,existingVideosCount:container.querySelectorAll('video').length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
-    
-    // מוחק את כל הווידאואים הקיימים לפני פתיחת חדש
-    const existingVideos = container.querySelectorAll('video');
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/7dfa3530-1805-4981-a9a8-fc6d1562ad92',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:600',message:'Cleaning existing videos',data:{count:existingVideos.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
-    existingVideos.forEach(v => {
-      v.pause();
-      v.src = '';
-      v.load();
-      v.remove();
-    });
-    
-    // מוחק הודעות שגיאה קיימות
-    const existingFallbacks = container.querySelectorAll('.fallback-box');
-    existingFallbacks.forEach(fb => fb.remove());
-    
-    currentVideoIndex = index;
-    const file = encodeURI(src);
-    const loadingEl = getLoadingEl();
-    const progressBar = getProgressBar();
-    
-    if(loadingEl) loadingEl.style.display = 'flex';
-    if(progressBar) progressBar.style.width = '0%';
-    
-    container.insertAdjacentHTML('beforeend', `
-      <video id="pv" controls autoplay playsinline preload="metadata">
-        <source src="${file}" type="video/mp4">
-      </video>
-    `);
-    
-    const v = container.querySelector('#pv');
-    currentVideo = v;
-    
+    function getLoadingEl(){ return document.getElementById('modalLoading'); }
+    function getProgressBar(){ return document.getElementById('progressBar'); }
+
+    let currentVideoIndex = 0;
+    let videoElements = [];
+    let currentVideo = null;
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    // איסוף כל הוידאואים
+    function collectVideos(){
+      const featured = document.querySelector('.featured[data-video]');
+      const cards = Array.from(document.querySelectorAll('.card[data-video]'));
+      videoElements = [];
+      if(featured) videoElements.push(featured);
+      videoElements.push(...cards);
+    }
+
+    // מציאת אינדקס וידאו נוכחי
+    function findVideoIndex(element){
+      return videoElements.findIndex(el => el === element);
+    }
+
+    // הצגת מודאל
+    function showModal(){
+      modal.style.display='flex';
+      document.body.style.overflow='hidden';
+      requestAnimationFrame(()=> modal.style.opacity='1');
+    }
+
+    // סגירת מודאל
+    function closeModal(){
+      // עוצר ומסיר את כל הווידאואים/iframes
+      const allVideos = container.querySelectorAll('video, iframe');
+      allVideos.forEach(v => {
+        try{ if(v.pause) v.pause(); }catch(e){}
+        try{ v.src = ''; }catch(e){}
+        try{ v.load && v.load(); }catch(e){}
+        v.remove();
+      });
+
+      // מסיר גם הודעות שגיאה
+      const fallbackBoxes = container.querySelectorAll('.fallback-box');
+      fallbackBoxes.forEach(box => box.remove());
+
+      currentVideo = null;
+      // Clean portrait mode if active
+      container.classList.remove('portrait');
+      modal.classList.remove('portrait');
+      modal.style.opacity='0';
+      document.body.style.overflow='';
+
+      setTimeout(()=>{
+        modal.style.display='none';
+        // שחזור loading ו-progress
+        const existingLoading = container.querySelector('#modalLoading');
+        const existingProgress = container.querySelector('.modal-progress');
+        if(!existingLoading){
+          container.insertAdjacentHTML('afterbegin', `
+            <div class="modal-loading" id="modalLoading">
+              <div class="spinner"></div>
+            </div>
+          `);
+        }
+        if(!existingProgress){
+          container.insertAdjacentHTML('beforeend', `
+            <div class="modal-progress">
+              <div class="modal-progress-bar" id="progressBar"></div>
+            </div>
+          `);
+        }
+      }, 200);
+    }
+
+    // פתיחת וידאו
+    function openLocalVideo(src, index){
+      // מוחק את כל הווידאואים הקיימים לפני פתיחת חדש
+      const existingVideos = container.querySelectorAll('video');
+      existingVideos.forEach(v => {
+        v.pause();
+        v.src = '';
+        v.load();
+        v.remove();
+      });
+
+      // מוחק הודעות שגיאה קיימות
+      const existingFallbacks = container.querySelectorAll('.fallback-box');
+      existingFallbacks.forEach(fb => fb.remove());
+
+      currentVideoIndex = index;
+      // If the source card is 'tall' (vertical like phone), switch modal to portrait mode
+      const isTall = videoElements[index] && videoElements[index].classList && videoElements[index].classList.contains('tall');
+      container.classList.toggle('portrait', Boolean(isTall));
+      // also mark the modal itself so we can hide nav and progress via CSS
+      modal.classList.toggle('portrait', Boolean(isTall));
+      const file = encodeURI(src);
+      const loadingEl = getLoadingEl();
+      const progressBar = getProgressBar();
+
+      if(loadingEl) loadingEl.style.display = 'flex';
+      if(progressBar) progressBar.style.width = '0%';
+
+      container.insertAdjacentHTML('beforeend', `
+        <video id="pv" controls autoplay playsinline preload="metadata">
+          <source src="${file}" type="video/mp4">
+        </video>
+      `);
+
+      const v = container.querySelector('#pv');
+      currentVideo = v;
+
+      // אם המידע המטה-דאטה נטען, השתמש בפרופורציות הווידאו כדי להחליט אם מדובר ב־portrait
+      v.addEventListener('loadedmetadata', ()=>{
+        try{
+          // Treat as portrait only if height/width >= 1.2 to avoid borderline cases
+          const ratio = v.videoHeight && v.videoWidth ? (v.videoHeight / v.videoWidth) : 0;
+          const isVideoPortrait = ratio >= 1.2;
+          container.classList.toggle('portrait', Boolean(isVideoPortrait));
+          modal.classList.toggle('portrait', Boolean(isVideoPortrait));
+        }catch(e){ /* noop */ }
+      });
+
+      // עדכון כפתורי ניווט
+      updateNavButtons();
+
+      // טעינת וידאו
+      v.addEventListener('loadedmetadata', ()=>{
+        const loading = getLoadingEl();
+        if(loading) loading.style.display = 'none';
+      });
+
+      v.addEventListener('timeupdate', ()=>{
+        const progress = getProgressBar();
+        if(progress && v.duration){
+          const progressPercent = (v.currentTime / v.duration) * 100;
+          progress.style.width = progressPercent + '%';
+        }
+      });
+
+      v.addEventListener('error', ()=>{
+        const loading = getLoadingEl();
+        if(loading) loading.style.display = 'none';
+        container.insertAdjacentHTML('beforeend',
+          `<div class="fallback-box">❌ לא הצלחתי לטעון: <code>${file}</code><br>
+           ודא שהשם/המיקום ב-repo תואם בול (רגיש לאותיות), או נסה <code>${file}?v=${Date.now()}</code> לעקיפת קאש.</div>`);
+      });
+
+      showModal();
+    }
+
+    // האם המקור הוא YouTube (עם פורמט youtube:ID או קישור מלא)
+    function isYouTubeSource(src){
+      if(!src) return false;
+      return src.startsWith('youtube:') || src.includes('youtube.com') || src.includes('youtu.be');
+    }
+
+    function extractYouTubeId(src){
+      // פורמט קצר: youtube:VIDEO_ID
+      if(src.startsWith('youtube:')) return src.split(':')[1];
+
+      try{
+        const url = new URL(src, location.href);
+        if(url.hostname.includes('youtu.be')){
+          return url.pathname.slice(1);
+        }
+        if(url.searchParams.has('v')){
+          return url.searchParams.get('v');
+        }
+      }catch(e){
+        // לא URL, נסה לשחזר משהו סביר
+        const m = src.match(/[A-Za-z0-9_-]{11}/);
+        return m ? m[0] : src;
+      }
+      const m = src.match(/[A-Za-z0-9_-]{11}/);
+      return m ? m[0] : src;
+    }
+
+    function openYouTubeVideo(src, index){
+      // נקה iframes/וידאו קיימים
+      const existingVideos = container.querySelectorAll('video, iframe');
+      existingVideos.forEach(v => v.remove());
+
+      const existingFallbacks = container.querySelectorAll('.fallback-box');
+      existingFallbacks.forEach(fb => fb.remove());
+
+      currentVideoIndex = index;
+      // If the source card is 'tall' (vertical like phone), switch modal to portrait mode
+      const isTall = videoElements[index] && videoElements[index].classList && videoElements[index].classList.contains('tall');
+      container.classList.toggle('portrait', Boolean(isTall));
+      // also mark the modal itself so we can hide nav and progress via CSS
+      modal.classList.toggle('portrait', Boolean(isTall));
+      const loadingEl = getLoadingEl();
+
+      if(loadingEl) loadingEl.style.display = 'flex';
+
+      const id = extractYouTubeId(src);
+      const sourceEl = videoElements[index];
+      const orientationHint = sourceEl && sourceEl.getAttribute && sourceEl.getAttribute('data-orientation') === 'portrait';
+      const hideControls = Boolean(isTall) || Boolean(orientationHint);
+      const controlsParam = hideControls ? '&controls=0' : '&controls=1';
+      const embed = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1${controlsParam}`;
+
+      container.insertAdjacentHTML('beforeend', `
+        <iframe id="pv-iframe" class="youtube-embed" src="${embed}" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture; web-share" allowfullscreen title="YouTube video"></iframe>
+      `);
+
+      const iframe = container.querySelector('#pv-iframe');
+      // הסתרת loading ברגע שה-iframe נטען
+      iframe.addEventListener('load', ()=>{
+        const loading = getLoadingEl();
+        if(loading) loading.style.display = 'none';
+        const progress = getProgressBar();
+        if(progress) progress.style.width = '100%';
+
+        // If the original card isn't marked as 'tall', try heuristics: bounding rect ratio or explicit data hint
+        try{
+          const rect = iframe.getBoundingClientRect();
+          const iframeRatio = rect.height && rect.width ? (rect.height / rect.width) : 0;
+          const iframeIsPortrait = iframeRatio >= 1.2;
+          const orientationHint = videoElements[index] && videoElements[index].getAttribute && videoElements[index].getAttribute('data-orientation') === 'portrait';
+          const finalPortrait = Boolean(isTall) || Boolean(orientationHint) || Boolean(iframeIsPortrait);
+          container.classList.toggle('portrait', finalPortrait);
+          modal.classList.toggle('portrait', finalPortrait);
+        }catch(e){ /* noop */ }
+      });
+
+      currentVideo = iframe;
+      updateNavButtons();
+      showModal();
+    }
+
     // עדכון כפתורי ניווט
-    updateNavButtons();
-    
-    // טעינת וידאו
-    v.addEventListener('loadedmetadata', ()=>{
-      const loading = getLoadingEl();
-      if(loading) loading.style.display = 'none';
-    });
-    
-    v.addEventListener('timeupdate', ()=>{
-      const progress = getProgressBar();
-      if(progress && v.duration){
-        const progressPercent = (v.currentTime / v.duration) * 100;
-        progress.style.width = progressPercent + '%';
-      }
-    });
-    
-    v.addEventListener('error', ()=>{
-      const loading = getLoadingEl();
-      if(loading) loading.style.display = 'none';
-      container.insertAdjacentHTML('beforeend',
-        `<div class="fallback-box">❌ לא הצלחתי לטעון: <code>${file}</code><br>
-         ודא שהשם/המיקום ב-repo תואם בול (רגיש לאותיות), או נסה <code>${file}?v=${Date.now()}</code> לעקיפת קאש.</div>`);
-    });
-    
-    showModal();
-  }
+    function updateNavButtons(){
+      prevBtn.disabled = currentVideoIndex === 0;
+      nextBtn.disabled = currentVideoIndex === videoElements.length - 1;
+    }
 
-  // עדכון כפתורי ניווט
-  function updateNavButtons(){
-    prevBtn.disabled = currentVideoIndex === 0;
-    nextBtn.disabled = currentVideoIndex === videoElements.length - 1;
-  }
+    // ניווט לוידאו הבא/קודם
+    function navigateVideo(direction){
+      const newIndex = currentVideoIndex + direction;
+      if(newIndex < 0 || newIndex >= videoElements.length) return;
 
-  // ניווט לוידאו הבא/קודם
-  function navigateVideo(direction){
-    const newIndex = currentVideoIndex + direction;
-    if(newIndex < 0 || newIndex >= videoElements.length) return;
-    
-    const newElement = videoElements[newIndex];
-    const src = newElement.getAttribute('data-video');
-    
-    // ניקוי וידאו קודם
-    const oldVideo = container.querySelector('#pv');
-    if(oldVideo) oldVideo.remove();
-    
-    openLocalVideo(src, newIndex);
-  }
+      const newElement = videoElements[newIndex];
+      const src = newElement.getAttribute('data-video');
 
-  // ניווט במקלדת
-  document.addEventListener('keydown', (e)=>{
-    if(modal.style.display !== 'flex') return;
-    
-    if(e.key === 'Escape'){
-      closeModal();
-    } else if(e.key === 'ArrowRight' || e.key === 'ArrowLeft'){
-      e.preventDefault();
-      navigateVideo(e.key === 'ArrowRight' ? 1 : -1);
-    } else if(e.key === ' ' && currentVideo){
-      e.preventDefault();
-      if(currentVideo.paused){
-        currentVideo.play();
+      // ניקוי וידאו קודם
+      const oldVideo = container.querySelector('#pv');
+      if(oldVideo) oldVideo.remove();
+
+      if(isYouTubeSource(src)){
+        // אם זה YouTube, טען ב-iframe
+        openYouTubeVideo(src, newIndex);
       } else {
-        currentVideo.pause();
+        openLocalVideo(src, newIndex);
       }
     }
-  });
 
-  // Swipe gestures
-  modal.addEventListener('touchstart', (e)=>{
-    touchStartX = e.changedTouches[0].screenX;
-  }, {passive: true});
+    // ניווט במקלדת
+    document.addEventListener('keydown', (e)=>{
+      if(modal.style.display !== 'flex') return;
 
-  modal.addEventListener('touchend', (e)=>{
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
-  }, {passive: true});
+      if(e.key === 'Escape'){
+        closeModal();
+      } else if(e.key === 'ArrowRight' || e.key === 'ArrowLeft'){
+        e.preventDefault();
+        navigateVideo(e.key === 'ArrowRight' ? 1 : -1);
+      } else if(e.key === ' ' && currentVideo){
+        e.preventDefault();
+        if(currentVideo.paused){ currentVideo.play(); } else { currentVideo.pause(); }
+      }
+    });
 
-  function handleSwipe(){
-    const swipeThreshold = 50;
-    const diff = touchStartX - touchEndX;
-    
-    if(Math.abs(diff) > swipeThreshold){
-      if(diff > 0){
-        navigateVideo(1); // swipe left = next
-      } else {
-        navigateVideo(-1); // swipe right = prev
+    // Swipe gestures
+    modal.addEventListener('touchstart', (e)=>{
+      touchStartX = e.changedTouches[0].screenX;
+    }, {passive: true});
+
+    modal.addEventListener('touchend', (e)=>{
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, {passive: true});
+
+    function handleSwipe(){
+      const swipeThreshold = 50;
+      const diff = touchStartX - touchEndX;
+
+      if(Math.abs(diff) > swipeThreshold){
+        if(diff > 0){ navigateVideo(1); } else { navigateVideo(-1); }
       }
     }
-  }
 
-  // Fullscreen (ניתן להוסיף כפתור אם נדרש)
-  // function toggleFullscreen(){
-  //   if(!currentVideo) return;
-  //   if(!document.fullscreenElement){
-  //     currentVideo.requestFullscreen().catch(()=>{});
-  //   } else {
-  //     document.exitFullscreen();
-  //   }
-  // }
+    // אירועי כפתורים
+    closeBtn.addEventListener('click', closeModal);
+    prevBtn.addEventListener('click', ()=> navigateVideo(-1));
+    nextBtn.addEventListener('click', ()=> navigateVideo(1));
+    modal.addEventListener('click', e=>{
+      // Close when clicking outside the video container, but ignore clicks
+      // that originate on nav or close buttons so their handlers run.
+      if(!e.target.closest('#videoContainer') && !e.target.closest('.modal-nav') && e.target !== closeBtn){
+        closeModal();
+      }
+    });
 
-  // אירועי כפתורים
-  closeBtn.addEventListener('click', closeModal);
-  prevBtn.addEventListener('click', ()=> navigateVideo(-1));
-  nextBtn.addEventListener('click', ()=> navigateVideo(1));
-  modal.addEventListener('click', e=>{
-    if(e.target===modal) closeModal();
-  });
+    // לחיצה על כרטיס/וידאו
+    document.addEventListener('click', e=>{
+      const el = e.target.closest('[data-video]');
+      if(!el) return;
+      e.preventDefault();
+      collectVideos();
+      const index = findVideoIndex(el);
+      const local = el.getAttribute('data-video');
+      if(local){
+        if(isYouTubeSource(local)) openYouTubeVideo(local, index);
+        else openLocalVideo(local, index);
+      }
+    });
 
-  // לחיצה על כרטיס/וידאו
-  document.addEventListener('click', e=>{
-    const el = e.target.closest('[data-video]');
-    if(!el) return;
-    e.preventDefault();
-    collectVideos();
-    const index = findVideoIndex(el);
-    const local = el.getAttribute('data-video');
-    if(local) openLocalVideo(local, index);
-  });
+    // פילטר קטגוריות
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.card, .featured');
 
-  // פילטר קטגוריות
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const cards = document.querySelectorAll('.card, .featured');
-  
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', ()=>{
-      const filter = btn.getAttribute('data-filter');
-      
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      
-      cards.forEach(card => {
-        const category = card.getAttribute('data-category');
-        if(filter === 'all' || category === filter){
-          card.style.display = '';
-          // אנימציה מחדש
-          card.style.opacity = '0';
-          card.style.transform = 'translateY(6px)';
-          setTimeout(()=>{
-            card.style.transition = 'opacity .4s ease, transform .4s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-          }, 10);
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const filter = btn.getAttribute('data-filter');
+
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        cards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          if(filter === 'all' || category === filter){
+            card.style.display = '';
+            // אנימציה מחדש
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(6px)';
+            setTimeout(()=>{
+              card.style.transition = 'opacity .4s ease, transform .4s ease';
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, 10);
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // ✅ ניווט עליון שמפעיל את אותו פילטר
+    document.querySelectorAll('.navlink[data-filter]').forEach(link=>{
+      link.addEventListener('click', ()=>{
+        const filter = link.getAttribute('data-filter');
+        const btn = document.querySelector(`.filter-btn[data-filter="${filter}"]`);
+        if(btn) btn.click();
+      });
+    });
+
+    // ✨ Particles effect
+    function createParticles(){
+      const particlesContainer = document.getElementById('particles');
+      if(!particlesContainer) return;
+
+      const particleCount = 30;
+      for(let i = 0; i < particleCount; i++){
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    /* (הוסר) אפקט קורסור מותאם אישית - הקוד שמייצר ומניע את ה-cursor-dot ו-cursor-outline הוסר */
+
+    // ✅ כפתור שיתוף
+    const shareBtn = document.getElementById('shareBtn');
+    if(shareBtn){
+      if(!navigator.share){
+        shareBtn.style.display = 'none';
+      } else {
+        shareBtn.addEventListener('click', ()=>{
+          navigator.share({
+            title: document.title,
+            text: 'פורטרפוליו עריכת וידאו',
+            url: location.href
+          }).catch(()=>{});
+        });
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', ()=>{
+      // Showreel autoplay (עם התחשבות בחיסכון נתונים)
+      const v = document.querySelector('.featured video');
+      if(v){
+        const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        const saveData = conn && conn.saveData;
+        if(saveData){
+          v.pause();
+          v.removeAttribute('autoplay');
         } else {
-          card.style.display = 'none';
+          v.muted = true; v.setAttribute('muted',''); v.setAttribute('playsinline','');
+          const tryPlay = ()=> v.play().catch(()=>{});
+          tryPlay(); setTimeout(tryPlay,300);
         }
-      });
-    });
-  });
-
-  // אפקט magnetic לכפתורים
-  const magneticElements = document.querySelectorAll('.btn, .btnlink');
-  magneticElements.forEach(el => {
-    el.addEventListener('mousemove', (e)=>{
-      const rect = el.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      const distance = Math.sqrt(x*x + y*y);
-      const maxDistance = 50;
-      
-      if(distance < maxDistance){
-        const moveX = x * 0.3;
-        const moveY = y * 0.3;
-        el.style.transform = `translate(${moveX}px, ${moveY}px)`;
       }
-    });
-    
-    el.addEventListener('mouseleave', ()=>{
-      el.style.transform = '';
-    });
-  });
 
-  // Parallax עדין ברקע (אופציונלי - רק אם יש רקע מתאים)
-  // window.addEventListener('scroll', ()=>{
-  //   const scrolled = window.pageYOffset;
-  //   const parallax = scrolled * 0.3;
-  //   // ניתן להוסיף parallax לרקע אם נדרש
-  // });
+      // איסוף וידאואים
+      collectVideos();
 
-  // שמירת מיקום scroll
-  window.addEventListener('beforeunload', ()=>{
-    sessionStorage.setItem('scrollPosition', window.pageYOffset);
-  });
+      // Toggle "עוד ביקורות"
+      const toggleBtn = document.getElementById('toggleReviews');
+      const moreReviews = document.getElementById('moreReviews');
+      if(toggleBtn && moreReviews){
+        toggleBtn.addEventListener('click', ()=>{
+          const open = moreReviews.classList.toggle('open');
+          moreReviews.setAttribute('aria-hidden', !open);
+          toggleBtn.setAttribute('aria-expanded', String(open));
+          toggleBtn.textContent = open ? 'הצג פחות' : 'עוד ביקורות';
+          if(open){
+            // גלילה חלקה אל המקטע המורחב
+            setTimeout(()=> moreReviews.scrollIntoView({behavior:'smooth', block:'start'}), 120);
+          }
+        });
+      }
 
-  // ✨ Particles effect
-  function createParticles(){
-    const particlesContainer = document.getElementById('particles');
-    if(!particlesContainer) return;
-    
-    const particleCount = 30;
-    for(let i = 0; i < particleCount; i++){
-      const particle = document.createElement('div');
-      particle.className = 'particle';
-      particle.style.left = Math.random() * 100 + '%';
-      particle.style.animationDelay = Math.random() * 15 + 's';
-      particle.style.animationDuration = (10 + Math.random() * 10) + 's';
-      particlesContainer.appendChild(particle);
-    }
-  }
+      // Normalize testimonial ratings and render stars (clamp min to 4, show missing stars without glow)
+      (function normalizeRatings(){
+        const filledSVG = '<svg viewBox="0 0 24 24" fill="currentColor">' +
+          '<path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>';
+        const emptySVG = '<svg class="empty" viewBox="0 0 24 24" fill="currentColor">' +
+          '<path d="M12 .587l3.668 7.431L23.3 9.75l-5.666 5.52L19.335 24 12 19.897 4.665 24l1.7-8.73L.7 9.75l7.632-1.732z"/></svg>';
 
-  // ✨ Scroll reveal animations
-  function initScrollReveal(){
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          entry.target.classList.add('active');
+        document.querySelectorAll('.rating').forEach(r => {
+          // Try to parse the existing aria label (e.g. "דירוג 3 מתוך 5")
+          const aria = r.getAttribute('aria-label') || '';
+          const m = aria.match(/דירוג\s*([\d.]+)/);
+          let actual = m ? parseFloat(m[1]) : null;
+          if(actual === null){
+            // Fallback: count filled star svgs (those without 'empty' class)
+            const stars = r.querySelectorAll('.stars svg:not(.empty)');
+            actual = stars.length || 5;
+          }
+          // Ensure we never display less than 4
+          const display = Math.max(4, Math.round(actual));
+
+          let starsContainer = r.querySelector('.stars');
+          if(!starsContainer){
+            starsContainer = document.createElement('div');
+            starsContainer.className = 'stars';
+            starsContainer.setAttribute('aria-hidden','true');
+            r.appendChild(starsContainer);
+          }
+          let html = '';
+          for(let i=0;i<5;i++) html += (i < display) ? filledSVG : emptySVG;
+          starsContainer.innerHTML = html;
+          starsContainer.setAttribute('title', `דירוג ${display} מתוך 5`);
+          r.setAttribute('aria-label', `דירוג ${display} מתוך 5`);
+        });
+
+        // Trust-line average (show floored filled stars and remaining as empty)
+        const trustStars = document.querySelector('.trust-line .stars');
+        const avgEl = document.querySelector('.trust-line .avg');
+        if(trustStars && avgEl){
+          const avg = parseFloat(avgEl.textContent) || 5;
+          const filled = Math.floor(avg);
+          let html = '';
+          for(let i=0;i<5;i++) html += (i < filled) ? filledSVG : emptySVG;
+          trustStars.innerHTML = html;
+          trustStars.setAttribute('title', `ממוצע ${avg} מתוך 5`);
         }
-      });
-    }, { threshold: 0.1 });
-    
-    reveals.forEach(reveal => observer.observe(reveal));
-  }
+      })();
 
-  // ✨ Custom cursor (אופציונלי - רק בדסקטופ)
-  function initCustomCursor(){
-    if(window.innerWidth < 768) return; // רק בדסקטופ
-    
-    const cursorDot = document.createElement('div');
-    cursorDot.className = 'cursor-dot';
-    const cursorOutline = document.createElement('div');
-    cursorOutline.className = 'cursor-outline';
-    document.body.appendChild(cursorDot);
-    document.body.appendChild(cursorOutline);
-    
-    let mouseX = 0, mouseY = 0;
-    let dotX = 0, dotY = 0;
-    let outlineX = 0, outlineY = 0;
-    
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+      // ✨ אפקטים
+      createParticles();
     });
-    
-    function animate(){
-      dotX += (mouseX - dotX) * 0.1;
-      dotY += (mouseY - dotY) * 0.1;
-      outlineX += (mouseX - outlineX) * 0.05;
-      outlineY += (mouseY - outlineY) * 0.05;
-      
-      cursorDot.style.left = dotX + 'px';
-      cursorDot.style.top = dotY + 'px';
-      cursorOutline.style.left = outlineX + 'px';
-      cursorOutline.style.top = outlineY + 'px';
-      
-      requestAnimationFrame(animate);
-    }
-    animate();
-  }
-
-  window.addEventListener('DOMContentLoaded', ()=>{
-    // שחזור scroll
-    const savedScroll = sessionStorage.getItem('scrollPosition');
-    if(savedScroll){
-      window.scrollTo(0, parseInt(savedScroll));
-    }
-    
-    // Showreel autoplay
-    const v = document.querySelector('.featured video');
-    if(!v) return;
-    v.muted = true; v.setAttribute('muted',''); v.setAttribute('playsinline','');
-    const tryPlay = ()=> v.play().catch(()=>{});
-    tryPlay(); setTimeout(tryPlay,300);
-    
-    // איסוף וידאואים
-    collectVideos();
-    
-    // ✨ אפקטים עיצוביים
-    createParticles();
-    initScrollReveal();
-    initCustomCursor();
-  });
-</script>
+  </script>
 </body>
 </html>
