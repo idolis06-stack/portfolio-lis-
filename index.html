@@ -18,7 +18,7 @@
 
   <style>
     :root{
-      --bg:#0b0f14; --text:#f5f7fa; --muted:#a0aab4; --accent:#146c94; --accent-2:#318ab2;
+      --bg:#141b23; --text:#f5f7fa; --muted:#a0aab4; --accent:#146c94; --accent-2:#318ab2;
       --radius:14px; --gap:18px; --wrap-max:1200px; --header-h:72px;
       --sidebar-w:340px;
       --footer-h:48px; /* ✅ גובה בר תחתון מרכזי */
@@ -33,8 +33,10 @@
       font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;
       direction:rtl; color:var(--text);
       background:
-        radial-gradient(1800px 800px at 80% -100px, rgba(20,108,148,0.25), transparent 60%),
-        radial-gradient(1200px 700px at 10% -160px, rgba(49,138,178,0.20), transparent 60%), #0a0d10;
+        radial-gradient(1800px 800px at 80% -100px, rgba(20,108,148,0.20), transparent 60%),
+        radial-gradient(1200px 700px at 10% -160px, rgba(49,138,178,0.18), transparent 60%), var(--bg);
+      background-size:120% 120%;
+      animation:ambientDrift 28s ease-in-out infinite;
       -webkit-tap-highlight-color: transparent;
       cursor:default;
       position:relative;
@@ -56,6 +58,11 @@
       0%, 100%{ transform:translate(0, 0) scale(1); opacity:1; }
       33%{ transform:translate(30px, -30px) scale(1.1); opacity:0.8; }
       66%{ transform:translate(-20px, 20px) scale(0.9); opacity:0.9; }
+    }
+
+    @keyframes ambientDrift{
+      0%, 100%{ background-position:0% 0%, 100% 0%; }
+      50%{ background-position:6% 8%, 92% 6%; }
     }
 
     /* ✨ Floating particles effect */
@@ -180,16 +187,15 @@
       display:grid;
       grid-template-columns:1fr var(--sidebar-w);
       gap:var(--gap);
-      /* Full viewport height minus header so the two columns can scroll independently */
       min-height:0;
-      height:calc(100vh - var(--header-h) - var(--gap) * 2);
-      max-height:calc(100vh - var(--header-h) - var(--gap) * 2);
-      overflow:hidden;
+      height:auto;
+      max-height:none;
+      overflow:visible;
     }
     .content{
       min-height:0;
-      height:100%;
-      overflow:hidden;
+      height:auto;
+      overflow:visible;
       display:flex;
       flex-direction:column;
     }
@@ -228,8 +234,8 @@
       padding:14px;
       padding-bottom:calc(var(--footer-h) + env(safe-area-inset-bottom) + 20px);
       min-height:0;
-      flex:1;
-      overflow-y:auto;
+      flex:0 0 auto;
+      overflow:visible;
       overflow-x:hidden;
       overscroll-behavior:contain;
       scrollbar-width:thin;
@@ -260,6 +266,13 @@
     }
     .grid::after{ content:""; display:block; height:calc(var(--footer-h) + env(safe-area-inset-bottom) + 24px); }
     .grid > .featured{ grid-column:1 / -1; }
+    .grid .extra-video{ display:none; }
+    .grid.show-all .extra-video{ display:block; }
+
+    .videos-toggle{
+      display:flex; justify-content:center;
+      margin:12px 0 0;
+    }
 
     @keyframes fadeUp{
       to{ opacity:1; transform:translateY(0); }
@@ -361,15 +374,13 @@
     .card:hover img{ transform:scale(1.1) }
 
     /* 🧰 סיידבר */
-    aside{
-      display:grid;
-      grid-template-rows:auto auto;
+    .side-panels{
+      display:flex;
+      flex-direction:column;
       gap:var(--gap);
-      min-height:0;
-      height:auto;
-      overflow:visible;
+      padding-bottom:calc(var(--footer-h) + 24px + env(safe-area-inset-bottom));
     }
-    .about,.contact,.intro{ padding:16px }
+.about,.contact,.intro{ padding:16px }
     .about h3,.contact h3,.intro h3{ margin:0 0 10px; color:#dff2ff }
 
     /* About panel layout */
@@ -553,10 +564,13 @@
         height:auto;
         max-height:none;
       }
-      aside{ order:2; }
       .content{ order:1; height:auto; }
       .scroller{ height:auto; max-height:none; flex:none; }
       .grid > .featured{ grid-column:1 / -1; }
+      .side-panels{
+        order:2;
+        padding-bottom:calc(var(--footer-h) + 32px + env(safe-area-inset-bottom));
+      }
     }
 
     @media (max-width: 720px){
@@ -833,7 +847,7 @@
     .testimonials{
       max-width:var(--wrap-max);
       margin:44px auto 0;
-      padding:0 var(--gap);
+      padding:0 var(--gap) calc(var(--footer-h) + 56px + env(safe-area-inset-bottom));
     }
     .testimonials h2{
       margin:0 0 16px;
@@ -972,7 +986,7 @@
           <button class="filter-btn" data-filter="showreel">Showreel</button>
         </div>
 
-        <div class="grid">
+        <div class="grid" id="videoGrid">
           <!-- Showreel -->
           <div class="featured" data-video="looking-lis.mp4" data-category="showreel">
             <video autoplay muted loop playsinline preload="metadata" poster="pngs/מחפש.png?v=6">
@@ -1015,12 +1029,12 @@
             <div class="card-overlay"><span class="card-title">קמפיין</span></div>
           </a>
 
-          <a class="card tall" href="#" data-video="Sequence 01_1.mp4" data-category="reels">
+          <a class="card tall extra-video" href="#" data-video="Sequence 01_1.mp4" data-category="reels">
             <img src="pngs/3wb.png" alt="רילס" loading="lazy" decoding="async">
             <div class="card-overlay"><span class="card-title">רילס</span></div>
           </a>
 
-          <a class="card tall" href="#" data-video="videos/carp.mp4" data-category="campaign">
+          <a class="card tall extra-video" href="#" data-video="videos/carp.mp4" data-category="campaign">
             <img src="pngs/carp.png" alt="קמפיין" loading="lazy" decoding="async">
             <div class="card-overlay"><span class="card-title">קמפיין</span></div>
           </a>
@@ -1028,34 +1042,37 @@
           <!-- דוגמה: הוספת סרטון יוטיוב (כולל סרטונים לא רשומים)
                אפשר להשתמש ב: data-video="youtube:VIDEO_ID" או data-video="https://youtu.be/VIDEO_ID"
                החליפו את VIDEO_ID במזהה הסרטון שלכם (11 תווים). */ -->
-          <a class="card" href="#" data-video="youtube:yAY0bCW2RAU" data-category="reels">
+          <a class="card extra-video" href="#" data-video="youtube:yAY0bCW2RAU" data-category="reels">
             <img src="pngs/juicy.png" alt="YouTube - סרטון" loading="lazy" decoding="async">
             <div class="card-overlay"><span class="card-title">YouTube — סרטון (לא רשום)</span></div>
           </a>
 
           <!-- הוספת סרטון יוטיוב קצר (Shorts) כפי שהתקבל מהמשתמש -->
-          <a class="card tall" href="#" data-video="youtube:Oug_e6Jk0S0" data-category="reels">
+          <a class="card tall extra-video" href="#" data-video="youtube:Oug_e6Jk0S0" data-category="reels">
             <img src="https://i.ytimg.com/vi/Oug_e6Jk0S0/maxresdefault.jpg" alt="YouTube Shorts (vertical)" loading="lazy" decoding="async">
             <div class="card-overlay"><span class="card-title">YouTube Shorts</span></div>
           </a>
 
           <!-- הוספת סרטון יוטיוב קצר נוסף (Shorts) כפי שביקש המשתמש -->
-          <a class="card tall" href="#" data-video="youtube:5DTcjBR4LRo" data-category="reels">
+          <a class="card tall extra-video" href="#" data-video="youtube:5DTcjBR4LRo" data-category="reels">
             <img src="https://i.ytimg.com/vi/5DTcjBR4LRo/maxresdefault.jpg" alt="YouTube Shorts (vertical)" loading="lazy" decoding="async">
             <div class="card-overlay"><span class="card-title">YouTube Shorts</span></div>
           </a>
 
           <!-- עוד YouTube Shorts כפי שהתבקש -->
-          <a class="card tall" href="#" data-video="youtube:kUu0gr3Uq5Y" data-category="reels">
+          <a class="card tall extra-video" href="#" data-video="youtube:kUu0gr3Uq5Y" data-category="reels">
             <img src="https://i.ytimg.com/vi/kUu0gr3Uq5Y/maxresdefault.jpg" alt="YouTube Shorts (vertical)" loading="lazy" decoding="async">
             <div class="card-overlay"><span class="card-title">YouTube Shorts</span></div>
           </a>
+        </div>
+        <div class="videos-toggle">
+          <button id="toggleVideos" class="btnlink more-btn" aria-expanded="false" aria-controls="videoGrid">עוד סרטונים</button>
         </div>
 
         <div class="footer-spacer" aria-hidden="true"></div>
       </section>
 
-      <aside>
+      <section class="side-panels" aria-label="אודות וקשר">
         <div class="panel about">
           <h3>אודות</h3>
           <div class="about-top">
@@ -1082,7 +1099,7 @@
               <li><span class="accent">הבנה ויראלית:</span> אני יודע מה גורם לאנשים לעצור, להגיב ולשתף.</li>
               <li><span class="accent">קצב בלתי מתפשר:</span> עריכה דינמית ששומרת על רמת עניין גבוהה לכל אורך הסרטון.</li>
               <li><span class="accent">ראש קריאייטיבי:</span> אני לא רק "לוחץ על כפתורים", אני עוזר לכם לדייק את הקונספט.</li>
-              <li><span class="accent">איכות ללא פשרות:</span> תוצאה נקייה, מקצועית ומהירה, מותאמת לסטנדרטים של 2024.</li>
+              <li><span class="accent">איכות ללא פשרות:</span> תוצאה נקייה, מקצועית ומהירה, מותאמת לסטנדרטים של 2026.</li>
             </ul>
           </div>
 
@@ -1135,11 +1152,15 @@
             </button>
           </div>
         </div>
-      </aside>
+      </section>
+
     </div>
   </div>
 
   <!-- ✅ המלצות -->
+  
+
+      
   <section class="testimonials" aria-label="המלצות">
     <h2>לקוחות מספרים</h2>
     <div class="trust-line">
@@ -1910,3 +1931,9 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
