@@ -140,6 +140,8 @@
   .group-title span{color:var(--muted);font-weight:400;font-size:.9rem}
   .grid-wide{grid-template-columns:repeat(2,1fr)}
   .card.wide{aspect-ratio:16/9}
+  /* odd number of landscape videos: the first one is shown full width */
+  #gridWide .card:first-child:nth-last-child(odd){grid-column:1 / -1}
   #gridTall{display:flex;flex-wrap:wrap;justify-content:center}
   #gridTall .card{width:calc((100% - 54px) / 4)}
 
@@ -738,6 +740,7 @@
   const media = p => /^https?:/.test(p) ? p : BASE + encodeURI(p);
 
   const WORKS = [
+    { title:"פרסומת", cat:"campaign", poster:"pngs/daniel-ad.jpg", video:"daniel-ad.mp4", wide:true },
     { title:"קמפיין", cat:"campaign", poster:"pngs/proj32_test.00_00_19_06.Still001.png", video:"proj32_test.mp4", wide:true },
     { title:"רילס", cat:"reels", poster:"pngs/ג7.Still002.png", video:"trymp4.mp4", wide:true },
     { title:"קמפיין מותג", cat:"campaign", poster:"pngs/KV.png", video:"kkkV3.mp4", wide:true },
