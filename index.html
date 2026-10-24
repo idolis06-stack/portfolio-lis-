@@ -735,8 +735,8 @@
 
   // ---- settings ----
   const PHONE = "972542537273";
-  // Media lives in the existing GitHub Pages repo; on github.io the paths are relative.
-  const BASE = location.hostname.endsWith("github.io") ? "" : "https://idolis06-stack.github.io/portfolio-lis-/";
+  // On the live site (lisedits.com / github.io) media paths are relative; local previews load them from GitHub.
+  const BASE = ["localhost", "127.0.0.1", "[::1]", ""].includes(location.hostname) ?"https://idolis06-stack.github.io/portfolio-lis-/" : "";
   const media = p => /^https?:/.test(p) ? p : BASE + encodeURI(p);
 
   const WORKS = [
