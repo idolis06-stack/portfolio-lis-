@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lis | עורך וידאו</title>
-<meta name="description" content="ליס – עורך וידאו לרילס, UGC וקמפיינים. עריכה שעוצרת את הגלילה.">
+<meta name="description" content="ליס – עריכת וידאו פרימיום למותגים ויוצרים. רילס, פרסומות וקמפיינים שעוצרים את הגלילה.">
 <meta property="og:title" content="Lis | עורך וידאו">
-<meta property="og:description" content="רילס, UGC וקמפיינים שעוצרים את הגלילה.">
+<meta property="og:description" content="עריכת וידאו פרימיום למותגים ויוצרים.">
 <meta property="og:image" content="pngs/524705844_17869241187411495_2786598028850442713_n.jpg">
 <meta name="theme-color" content="#141b23">
 <link rel="icon" id="favicon" href="pngs/524705844_17869241187411495_2786598028850442713_n.jpg">
@@ -81,6 +81,12 @@
   header{transition:box-shadow .3s}
   header.scrolled{box-shadow:0 10px 30px rgba(0,0,0,.35)}
   :focus-visible{outline:2px solid var(--accent-3);outline-offset:3px}
+  .nav-end{display:flex;align-items:center;gap:10px}
+  .ig-link{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--muted);border:1px solid var(--line);transition:color .2s,border-color .2s,box-shadow .2s}
+  .ig-link:hover{color:#fff;border-color:rgba(95,195,238,.45);box-shadow:var(--glow)}
+  .ig-link svg,.ig-foot svg{width:18px;height:18px}
+  .ig-foot{display:inline-flex;align-items:center;gap:6px;color:var(--muted);transition:color .2s}
+  .ig-foot:hover{color:var(--accent-3)}
   .nav .btn{padding:9px 18px;font-size:.92rem}
 
   /* ---------- hero ---------- */
@@ -191,16 +197,19 @@
   .shot-view.open{display:flex}
   .shot-view img{max-width:min(520px,100%);max-height:88vh;border-radius:16px;border:1px solid rgba(95,195,238,.3);box-shadow:var(--glow-strong)}
 
-  /* ---------- quote process ---------- */
-  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:s}
-  .step{padding:30px 26px;overflow:hidden}
-  .step-num{position:absolute;top:10px;inset-inline-end:18px;font-size:4.2rem;font-weight:900;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(95,195,238,.25)}
-  .step .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:rgba(49,138,178,.15);border:1px solid rgba(95,195,238,.25);margin-bottom:18px;box-shadow:0 0 18px rgba(49,138,178,.25)}
-  .step .ic svg{width:24px;height:24px;stroke:var(--accent-3);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-  .step h3{font-weight:700;font-size:1.25rem;margin-bottom:6px}
-  .step p{color:var(--muted);font-weight:300}
-  .quote-cta{display:flex;justify-content:center;margin-top:36px}
-  .quote-cta .btn{font-size:1.1rem;padding:16px 30px}
+  /* ---------- pricing (single card) ---------- */
+  #quote{scroll-margin-top:90px}
+  .price-card{max-width:720px;margin-inline:auto;padding:24px 0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:18px;position:relative}
+  .price-card::before{content:"";position:absolute;inset:-40px -20% auto;height:260px;background:radial-gradient(closest-side,rgba(49,138,178,.22),transparent);z-index:-1;pointer-events:none}
+  .price-card h2{font-size:clamp(2rem,4.6vw,3.3rem);line-height:1.15}
+  .price-lead{color:#c3ccd5;font-size:1.15rem;font-weight:300;max-width:46ch}
+  .price-big{padding-top:18px;border-top:1px solid var(--line);min-width:260px}
+  .price-card .eyebrow{margin:0}
+  .price-big{display:flex;align-items:baseline;justify-content:center;gap:10px;flex-wrap:wrap}
+  .price-big b{font-size:2rem;font-weight:800;line-height:1}
+  .price-big small{color:var(--muted);font-size:1rem}
+  .price-note{color:var(--muted);font-size:.92rem;margin-top:-4px}
+  .price-card .btn-wa{margin-top:6px;font-size:1.1rem;padding:15px 30px}
 
   /* ---------- faq ---------- */
   .faq-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:56px;align-items:start}
@@ -327,6 +336,9 @@
   }
   /* ---------- phone polish (kept last so it wins over earlier rules) ---------- */
   @media (max-width:760px){
+    .price-card{padding:8px 0}
+    .price-lead{font-size:1.05rem}
+    .price-card .btn-wa{width:100%}
     section{padding:64px 0}
     .hero{padding:32px 0 44px}
     .hero-ctas .btn{flex:1 1 100%}
@@ -430,7 +442,9 @@
   @keyframes flash{0%{opacity:0}25%{opacity:.85}100%{opacity:0}}
 
   /* hero entrance after the intro */
-  .ln{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em}
+  .ln{display:block;padding-bottom:.1em;margin-bottom:-.1em}
+  /* clip only while the lines slide in, then let the glow breathe */
+  html.intro:not(.intro-done) .ln{overflow:hidden}
   .ln > span{display:inline-block}
   html.intro .ln > span{transform:translateY(110%)}
   html.intro .hero .tag,html.intro .hero-ctas,html.intro .stats{opacity:0;transform:translateY(16px)}
@@ -459,7 +473,7 @@
     <div class="in-rec"><i></i>REC</div>
     <div class="in-tc" id="inTc">00:00:00:00</div>
     <div class="in-logo"><span>L</span><span>i</span><span>s</span><span class="dot">.</span></div>
-    <div class="in-sub">VIDEO EDITOR</div>
+    <div class="in-sub">PREMIUM VIDEO EDITING</div>
     <div class="in-line"><div class="in-clips"><b></b><b></b><b></b><b></b><b></b></div><div class="in-head"></div></div>
     <div class="in-skip">הקישו לדילוג</div>
   </div>
@@ -473,7 +487,7 @@
   <div class="wrap nav">
     <a href="#top" class="brand">
       <img id="avatar" src="pngs/524705844_17869241187411495_2786598028850442713_n.jpg" alt="">
-      <span><b>Lis</b><small>עורך וידאו · רילס · פרסומות · תוכן מותג</small></span>
+      <span><b>Lis</b><small>עריכת וידאו פרימיום</small></span>
     </a>
     <nav class="nav-links">
       <a href="#work">עבודות</a>
@@ -481,9 +495,10 @@
       <a href="#reviews" hidden>לקוחות</a>
       <a href="#quote">הצעת מחיר</a>
     </nav>
-    <a class="btn btn-wa" data-wa="היי ליס, ראיתי את האתר ואשמח לדבר על פרויקט" href="#">
-      <svg viewBox="0 0 24 24"><use href="#i-wa"/></svg>בוא נדבר
-    </a>
+    <div class="nav-end">
+      <a class="ig-link" href="https://www.instagram.com/lis__edit/" target="_blank" rel="noopener" aria-label="אינסטגרם @lis__edit"><svg viewBox="0 0 24 24"><use href="#i-ig"/></svg></a>
+      <a class="btn btn-wa" href="#quote">בוא נדבר</a>
+    </div>
   </div>
 </header>
 
@@ -495,9 +510,7 @@
         <span class="tag"><span class="live"></span>זמין לפרויקטים חדשים</span>
         <h1><span class="ln"><span>עריכה שעוצרת</span></span><span class="ln"><span>את <span class="grad">הגלילה.</span></span></span></h1>
         <div class="hero-ctas">
-          <a class="btn btn-wa" data-wa="היי ליס, ראיתי את האתר ואשמח לדבר על פרויקט" href="#">
-            <svg viewBox="0 0 24 24"><use href="#i-wa"/></svg>שלחו הודעה בוואטסאפ
-          </a>
+          <a class="btn btn-wa" href="#quote">התחילו פרויקט</a>
           <a class="btn" href="#work">לעבודות</a>
         </div>
         <div class="stats">
@@ -518,8 +531,7 @@
 
   <div class="strip" aria-hidden="true">
     <div class="strip-track">
-      <span>רילס</span><span>UGC</span><span>פרסומות קצרות</span><span>קמפיינים</span><span>גיימינג</span><span>תוכן מותג</span>
-      <span>רילס</span><span>UGC</span><span>פרסומות קצרות</span><span>קמפיינים</span><span>גיימינג</span><span>תוכן מותג</span>
+      <span>עריכת פרימיום</span><span>Color Grading</span><span>Sound Design</span><span>Motion Graphics</span><span>הוקים ויראליים</span><span>פרסומות ורילס</span>
     </div>
   </div>
 
@@ -549,10 +561,10 @@
         <div class="glass about-card rv">
           <div class="me">
             <img id="avatar2" src="pngs/524705844_17869241187411495_2786598028850442713_n.jpg" alt="ליס">
-            <div><b style="font-size:1.3rem">היי, אני ליס</b><div style="color:var(--muted)">עורך וידאו לרשתות</div></div>
+            <div><b style="font-size:1.3rem">היי, אני ליס</b><div style="color:var(--muted)">עורך וידאו פרימיום</div></div>
           </div>
           <p>כבר יותר מ-4 שנים אני עורך רילס, UGC ופרסומות קצרות למותגים וליוצרי תוכן. הסרטונים שערכתי צברו יותר מ-5 מיליון צפיות.</p>
-          <p>אני לא רק מחבר קטעים. אני חושב כמו מי שצופה: איפה הוא ימשיך לגלול, ומה יגרום לו להישאר עד הסוף.</p>
+          <p>אני לא רק מחבר קטעים. כל סרטון עובר עבודה מלאה: הוק, קצב, סאונד, צבע ומושן, כדי שייראה ברמה של מותג גדול.</p>
           <div class="tools">
             <span class="tools-label">הכלים שלי</span>
             <span class="tool" title="Adobe Premiere Pro" aria-label="Adobe Premiere Pro">
@@ -570,7 +582,7 @@
           <div class="glass why-item rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><h3>הוק בשנייה הראשונה</h3><p>פתיחה שתופסת את הצופה לפני שהאגודל ממשיך לגלול.</p></div>
           <div class="glass why-item rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg></div><h3>קצב שמחזיק עד הסוף</h3><p>קאטים, סאונד ואפקטים שעובדים יחד, בלי רגע מת.</p></div>
           <div class="glass why-item rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></div><h3>עוזר לחשוב על הרעיון</h3><p>יש לכם רק כיוון כללי? נדייק אותו יחד לפני שמתחילים.</p></div>
-          <div class="glass why-item rv"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3>זמין ועומד בזמנים</h3><p>עונה בוואטסאפ, מעדכן לאורך הדרך ומוסר כשסיכמנו.</p></div>
+          <div class="glass why-item rv"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3>יחס אישי, לא פס ייצור</h3><p>מספר מצומצם של לקוחות בכל חודש, כך שכל פרויקט מקבל את מלוא תשומת הלב.</p></div>
         </div>
       </div>
     </div>
@@ -586,40 +598,16 @@
     </div>
   </section>
 
-  <!-- QUOTE PROCESS -->
+  <!-- PRICING -->
   <section id="quote" style="padding-top:0">
     <div class="wrap">
-      <div class="sec-head rv">
-        <div>
-          <span class="eyebrow">HOW IT WORKS</span>
-          <h2>כמה זה <span class="grad">עולה?</span></h2>
-          <p class="sub">כל פרויקט שונה, אז אין מחירון קבוע. שלחו דוגמה ותקבלו הצעת מחיר שמותאמת בדיוק לכם.</p>
-        </div>
-      </div>
-      <div class="steps">
-        <div class="glass step rv">
-          <span class="step-num">01</span>
-          <div class="ic"><svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg></div>
-          <h3>שולחים דוגמה</h3>
-          <p>סרטון שאהבתם, רעיון או חומרי גלם. ישר לוואטסאפ.</p>
-        </div>
-        <div class="glass step rv">
-          <span class="step-num">02</span>
-          <div class="ic"><svg viewBox="0 0 24 24"><path d="M20 12V7l-5-5H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h6"/><path d="M14 2v5h6"/><path d="M16 19l2 2 4-4"/></svg></div>
-          <h3>מקבלים הצעת מחיר</h3>
-          <p>מחיר מותאם לפרויקט, בלי חבילות ובלי הפתעות.</p>
-        </div>
-        <div class="glass step rv">
-          <span class="step-num">03</span>
-          <div class="ic"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="M17 10l5-3v10l-5-3"/></svg></div>
-          <h3>מקבלים סרטון מוכן</h3>
-          <p>עריכה, סבב תיקונים, ומסירה בזמן שסיכמנו.</p>
-        </div>
-      </div>
-      <div class="quote-cta rv">
-        <a class="btn btn-wa" data-wa="היי ליס, יש לי דוגמה לסרטון ואשמח להצעת מחיר" href="#">
-          <svg viewBox="0 0 24 24"><use href="#i-wa"/></svg>שלחו דוגמה וקבלו הצעת מחיר
-        </a>
+      <div class="price-card rv">
+        <span class="eyebrow">PRICING</span>
+        <h2>זו לא הוצאה.<br><span class="grad">זו השקעה בעסק שלך.</span></h2>
+        <p class="price-lead">סרטון אחד שעוצר את הגלילה יכול להביא יותר לקוחות מחודש שלם של פוסטים שאף אחד לא רואה.</p>
+        <div class="price-big"><small>החל מ-</small><b dir="ltr">₪499</b><small>לסרטון</small></div>
+        <a class="btn btn-wa" data-wa="היי ליס, ראיתי באתר שפרויקטים מתחילים מ-499 ₪ ואשמח להצעת מחיר" href="#"><svg viewBox="0 0 24 24"><use href="#i-wa"/></svg>לקבלת הצעת מחיר</a>
+        <p class="price-note">הצעת המחיר בחינם וללא התחייבות · סבב תיקונים כלול</p>
       </div>
     </div>
   </section>
@@ -662,17 +650,15 @@
     <div class="wrap">
       <div class="cta-box rv">
         <h2>יש לך רעיון?<br><span class="grad">בוא נהפוך אותו לויראלי.</span></h2>
-        <p>הודעה אחת בוואטסאפ, ותשובה עוד היום.</p>
-        <a class="btn btn-wa" data-wa="היי ליס, ראיתי את האתר ואשמח לדבר על פרויקט" href="#">
-          <svg viewBox="0 0 24 24"><use href="#i-wa"/></svg>שלחו הודעה עכשיו
-        </a>
+        <p>כמה שאלות קצרות, ותשובה עוד היום.</p>
+        <a class="btn btn-wa" href="#quote">התחילו פרויקט</a>
       </div>
     </div>
   </section>
 </main>
 
 <footer>
-  <div class="wrap"><span>© 2026 Lis · Visual Storytelling</span><span>זמין לפרויקטים חדשים</span></div>
+  <div class="wrap"><span>© 2026 Lis · Premium Video Editing</span><a class="ig-foot" href="https://www.instagram.com/lis__edit/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><use href="#i-ig"/></svg><span dir="ltr">@lis__edit</span></a></div>
 </footer>
 
 <a class="fab" data-wa="היי ליס, ראיתי את האתר ואשמח לדבר על פרויקט" href="#" aria-label="וואטסאפ">
@@ -698,6 +684,7 @@
 </div>
 
 <svg width="0" height="0" style="position:absolute">
+  <symbol id="i-ig" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor"/></symbol>
   <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm5.8 14.13c-.24.68-1.42 1.3-1.95 1.35-.5.05-.97.23-3.27-.68-2.76-1.09-4.51-3.91-4.65-4.09-.13-.18-1.11-1.48-1.11-2.82s.7-2 .95-2.27c.25-.27.54-.34.72-.34h.52c.17 0 .39-.06.61.47.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.89 1.04.93 1.93 1.22 2.2 1.36.27.14.43.11.59-.07.16-.18.68-.79.86-1.07.18-.27.36-.23.61-.14.25.09 1.59.75 1.86.89.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></symbol>
 </svg>
 
@@ -727,6 +714,7 @@
         html.style.overflow = "";
       }, 120);
       setTimeout(() => el.remove(), 1100);
+      setTimeout(() => html.classList.add("intro-done"), 1700);
     }
     setTimeout(finish, 2000);
     el.addEventListener("click", finish);
